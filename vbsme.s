@@ -829,7 +829,7 @@ sub $t0, $t1, $t0
 add $s0, $s0, $t0
 bne $s0, $zero, found
 slt $t0, $s0, $s1
-beq $t0, $zero, newbest:
+beq $t0, $zero, newbest
 newbest:
 add $s1, $s0, $zero
 add $v0, $s4, $zero
