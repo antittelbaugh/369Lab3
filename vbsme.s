@@ -809,6 +809,9 @@ vbsme:
 #}
 #
 # 
+#initialization of variables
+addi $s1, $zero, 128
+
 moves:
 
 SAD:
