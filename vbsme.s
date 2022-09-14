@@ -810,7 +810,7 @@ vbsme:
 #
 # 
 #initialization of variables
-addi $s1, $zero, 128
+addi $s1, $zero, 2147483647
 
 moves:
 
