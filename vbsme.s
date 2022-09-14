@@ -778,12 +778,72 @@ print_result:
 vbsme:  
     li      $v0, 0              # reset $v0 and $V1
     li      $v1, 0
-	
-SAD:
+#C-code
+#sad(frame x, frame y){
+# frame_index = x*asize[1] + y
+# j= 0;
+#  for(int i = 0; i < asize[2]*asize[3], i++ ){
+#   j++;
+#   sum += |frame[frame_index] - window[i]|;
+#  
+#   if(j < asize[3]){
+#		frame_index++;
+#   }else{
+#		frame_index = frameindex - asize[3] + asize[]
+#		j = 0;
+#	}
+#}
+#	
 
+# C- code of SAD
+# frame_index = x*asize[0] + y;
+# if(j == 0){
+# SUM = 0;
+#}
+# 	SUM += |frame[frame_index] - window[0]|
+# if(SUM == 0){
+# return x, y;// v0 v1
+#}
+# if (SUM < best){
+#    best = SUM;
+#}
+#
+# 
+moves:
+
+SAD:
+bne $s2, $zero, bob # if were starting at the left hand corner of the window
+add $s0, $zero, $zero
+bob: 
+sll $t0, $s3, 2
+add $t0, $t0, $a1
+lw $t0, 0($t0)
+sll $t1, $s2, 2
+add $t1, $t1, $a2
+lw $t1, 0($t1)
+slt $t2, $t0, $t1
+bne $t2, $zero, flip
+sub $t0, $t0, $t1
+flip:
+sub $t0, $t1, $t0
+add $s0, $s0, $t0
+bne $s0, $zero, found
+slt $t0, $s0, $s1
+beq $t0, $zero, newbest:
+newbest:
+add $s1, $s0, $zero
+add $v0, $s4, $zero
+add $v1, $s5, $zero
+j adgen #CHANGE THIS LATER
+found:
+add $v0, $s4, $zero
+add $v1, $s5, $zero
+jr $ra
+
+	
 adgen:
 
-moves:
+
 	
 
 
