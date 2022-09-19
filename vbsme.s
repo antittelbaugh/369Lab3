@@ -492,6 +492,17 @@ newline: .asciiz     "\n"
 main: 
     addi    $sp, $sp, -4    # Make space on stack
     sw      $ra, 0($sp)     # Save return address
+	    # Start test 1 
+    ############################################################
+    la      $a0, asize0     # 1st parameter: address of asize1[0]
+    la      $a1, frame0     # 2nd parameter: address of frame1[0]
+    la      $a2, window0    # 3rd parameter: address of window1[0] 
+   
+    jal     vbsme           # call function
+    jal     print_result    # print results to console
+    
+    ############################################################
+    # End of test 1 
          
     # Start test 1 
     ############################################################
@@ -809,42 +820,47 @@ vbsme:
 #}
 #
 # 
-#initialization of variables
 addi $s1, $zero, 32767
-
+lw $t1, 8($a0)
+lw $t2, 12($a0)
+mul $s6, $t1, $t2;
 moves:
-
+adgen:
 SAD:
 bne $s2, $zero, bob # if were starting at the left hand corner of the window
-add $s0, $zero, $zero
+add $s0, $zero, $zero # if we're starting ath the left hand corner reset sum to 0 
 bob: 
-sll $t0, $s3, 2
-add $t0, $t0, $a1
-lw $t0, 0($t0)
-sll $t1, $s2, 2
-add $t1, $t1, $a2
-lw $t1, 0($t1)
-slt $t2, $t0, $t1
-bne $t2, $zero, flip
-sub $t0, $t0, $t1
+sll $t0, $s3, 2 # t0 = frame index * 4
+add $t0, $t0, $a1 #t0 = adress of frame[frame_index]
+lw $t0, 0($t0) # t0 = whats in frame[frame_index]
+sll $t1, $s2, 2 # t1 = window_index*4
+add $t1, $t1, $a2 # t1 = address of window[window_index]
+lw $t1, 0($t1) # t1 = whats in window[window_index]
+slt $t2, $t0, $t1 # t2 = 1 if whats in frame[frame_index] is less than whats in window[window_index] else t2 is 0
+bne $t2, $zero, flip #if whats in frame[frame_index] is less than whats in window[window_index] go to flip else move forward
+sub $t0, $t0, $t1 #t0 > t1 so sumtract and store in t0
+j addtos #jump past flip
 flip:
-sub $t0, $t1, $t0
-add $s0, $s0, $t0
-bne $s0, $zero, found
-slt $t0, $s0, $s1
+sub $t0, $t1, $t0 #t1 > t0 so sumtract and store in t0
+addtos:
+add $s0, $s0, $t0 # add new sum to current sum from before
+addi $t0, $s2, 1 # add 1 plus the index in the window
+beq $t0, $s6, adgen # if at the end of the window look for found and new best
+bne $s0, $zero, found # if SUM is == 0 return cordinates
+slt $t0, $s0, $s1 #if new sum is less than our current best set the new best
 beq $t0, $zero, newbest
 newbest:
-add $s1, $s0, $zero
+add $s1, $s0, $zero # set new best sum and cordinates
 add $v0, $s4, $zero
 add $v1, $s5, $zero
-j adgen #CHANGE THIS LATER
+j adgen #CHANGE THIS LATER 
 found:
-add $v0, $s4, $zero
+add $v0, $s4, $zero# 
 add $v1, $s5, $zero
 jr $ra
 
 	
-adgen:
+
 
 
 	
