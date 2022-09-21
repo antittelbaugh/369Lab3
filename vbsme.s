@@ -848,7 +848,7 @@ addi $t0, $s2, 1 # add 1 plus the index in the window
 beq $t0, $s6, adgen # if at the end of the window look for found and new best
 bne $s0, $zero, found # if SUM is == 0 return cordinates
 slt $t0, $s0, $s1 #if new sum is less than our current best set the new best
-beq $t0, $zero, newbest
+beq $t0, $zero, adgen
 newbest:
 add $s1, $s0, $zero # set new best sum and cordinates
 add $v0, $s4, $zero
