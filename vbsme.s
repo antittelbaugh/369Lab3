@@ -887,7 +887,7 @@ next3:
   addi $t0, $zero, 4
   beq $t2, $t0, exit         #check if w is 4 -- all direction finish - jr $ra
   addi $s7, $s7, 1
-
+  j movesRight
 exit:
   jr $ra
   
