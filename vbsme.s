@@ -492,7 +492,7 @@ newline: .asciiz     "\n"
 main: 
     addi    $sp, $sp, -4    # Make space on stack
     sw      $ra, 0($sp)     # Save return address
-	    # Start test 1 
+	    # Start test 0 
     ############################################################
     la      $a0, asize0     # 1st parameter: address of asize1[0]
     la      $a1, frame0     # 2nd parameter: address of frame1[0]
@@ -720,9 +720,9 @@ print_result:
 # and size of "window" and "frame" arrays are stored under "asize"
 
 # - initially current sum of difference is set to a very large value
-# - move "window" over the "frame" one cell at a time starting with location (0,0)
-# - moves are based circular pattern 
-# - for each move, function calculates  the sum of absolute difference (SAD) 
+# - moves "window" over the "frame" one cell at a time starting with location (0,0)
+# - movess are based circular pattern 
+# - for each moves, function calculates  the sum of absolute difference (SAD) 
 #   between the window and the overlapping block on the frame.
 # - if the calculated sum of difference is LESS THAN the current sum of difference
 #   then the current sum of difference is updated and the coordinate of the top left corner 
@@ -789,44 +789,13 @@ print_result:
 vbsme:  
     li      $v0, 0              # reset $v0 and $V1
     li      $v1, 0
-#C-code
-#sad(frame x, frame y){
-# frame_index = x*asize[1] + y
-# j= 0;
-#  for(int i = 0; i < asize[2]*asize[3], i++ ){
-#   j++;
-#   sum += |frame[frame_index] - window[i]|;
-#  
-#   if(j < asize[3]){
-#		frame_index++;
-#   }else{
-#		frame_index = frameindex - asize[3] + asize[]
-#		j = 0;
-#	}
-#}
-#	
-
-# C- code of SAD
-# frame_index = x*asize[0] + y;
-# if(j == 0){
-# SUM = 0;
-#}
-# 	SUM += |frame[frame_index] - window[0]|
-# if(SUM == 0){
-# return x, y;// v0 v1
-#}
-# if (SUM < best){
-#    best = SUM;
-#}
-#
-# 
-addi $s1, $zero, 32767
-#permanent registers
-add $s4, $zero, $zero				# Set currRow to 0
-add $s5, $zero, $zero				# Set currCol to 0
-add $s6, $zero, $zero       # initialize count to 0
-add $s7, $zero, $zero       #initialize direction to 0
-
+	addi $s1, $zero, 32767
+	#permanent registers
+	add $s4, $zero, $zero				# Set currRow to 0
+	add $s5, $zero, $zero				# Set currCol to 0
+	add $s6, $zero, $zero       # initialize count to 0
+	add $s7, $zero, $zero       #initialize direction to 0
+	j adgen
 moves:
   lw $t0, 0($a0)				# Set t0 to frame number of rows
   lw $t1, 8($a0)				# Set t1 to window number of rows
@@ -840,26 +809,26 @@ movesRight:
   addi $t2, $t2, 1           #increment exit check
   bne $s7, $zero, movesDown   #if (pos[2]==0)
   sub $t5, $t9, $s6          #t5 = colDiff-count
-  slt $t4, $s5, $t5          #t4 = (currCol<colDiff-count)
-  beq $t4, $zero, next       #if (t4==0), next
+  slt $t0, $s5, $t5          #t4 = (currCol<colDiff-count)
+  beq $t0, $zero, next       #if (t4==0), next
   addi $s5, $s5, 1           #currCol++ 
-  j addgen
+  j adgen
 next:
-  addi $t0, $zero, 4
+  addi $t0, $zero, 5
   beq $t2, $t0, exit         #check if w is 4 -- all direction finish - jr $ra
   addi $s7, $s7, 1           #change direction
 
 movesDown:
   addi $t2, $t2, 1           #increment exit check
-  addi $t0, $t0, 1           #set temp to 1
-  bne $s7, $t9, movesLeft     #if (pos[2]==1)
+  add $t0, $zero, 1           #set temp to 1
+  bne $s7, $t0, movesLeft     #if (pos[2]==1)
   sub $t5, $t8, $s6          #t5 = rowDiff-count
-  slt $t4, $s4, $t5          #t4 = (currRow<rowDiff-count)
-  beq $t4, $zero, next1      #if (t4==0), next
+  slt $t0, $s4, $t5          #t4 = (currRow<rowDiff-count)
+  beq $t0, $zero, next1      #if (t4==0), next
   addi $s4, $s4, 1           #currRow++ 
   j adgen
 next1:
-  addi $t0, $zero, 4
+  addi $t0, $zero, 5
   beq $t2, $t0, exit         #check if w is 4 -- all direction finish - jr $ra
   addi $s7, $s7, 1           #change direction
 
@@ -868,165 +837,96 @@ movesLeft:
   add $t0, $zero, $zero
   addi $t0, $t0, 2        #set temp to 2
   bne $s7, $t0, movesUp    #if(pos[2]==2)
-  slt $t4, $s6, $s5       #if currCol > count
-  bne $t4, $zero, next2
+  slt $t0, $s6, $s5       #if currCol > count
+  beq $t0, $zero, next2
   addi $s5 $s5, -1
-  #permanent registers
-add $s4, $zero, $zero				# Set currRow to 0
-add $s5, $zero, $zero				# Set currCol to 0
-add $s6, $zero, $zero       # initialize count to 0
-add $s7, $zero, $zero       #initialize direction to 0
-
-moves:
-  lw $t0, 0($a0)				# Set t0 to frame number of rows
-  lw $t1, 8($a0)				# Set t1 to window number of rows
-  sub $t8, $t0, $t1		# Set t8 to rowMax = frameRowSize - windowRowSize	
-  lw $t0, 4($a0)				# Set t0 to frame number of columns
-  lw $t1, 12($a0)				# Set t1 to window number of columns
-  sub $t9, $t0, $t1			# Set t9 to colMax = frameColSize - windowColSize
-  add $t2, $zero, $zero   #initialize exit check 't2' to 0
-
-movesRight:
-  addi $t2, $t2, 1           #increment exit check
-  bne $s7, $zero, movesDown   #if (pos[2]==0)
-  sub $t5, $t9, $s6          #t5 = colDiff-count
-  slt $t4, $s5, $t5          #t4 = (currCol<colDiff-count)
-  beq $t4, $zero, next       #if (t4==0), next
-  addi $s5, $s5, 1           #currCol++ 
-  j addgen
-next:
-  addi $t0, $zero, 4
-  beq $t2, $t0, exit         #check if w is 4 -- all direction finish - jr $ra
-  addi $s7, $s7, 1           #change direction
-
-movesDown:
-  addi $t2, $t2, 1           #increment exit check
-  addi $t0, $t0, 1           #set temp to 1
-  bne $s7, $t9, movesLeft     #if (pos[2]==1)
-  sub $t5, $t8, $s6          #t5 = rowDiff-count
-  slt $t4, $s4, $t5          #t4 = (currRow<rowDiff-count)
-  beq $t4, $zero, next1      #if (t4==0), next
-  addi $s4, $s4, 1           #currRow++ 
-  j addgen
-next1:
-  addi $t0, $zero, 4
-  beq $t2, $t0, exit         #check if w is 4 -- all direction finish - jr $ra
-  addi $s7, $s7, 1           #change direction
-
-movesLeft:
-  addi $t2, $t2, 1           #increment exit check
-  add $t0, $zero, $zero
-  addi $t0, $t0, 2        #set temp to 2
-  bne $s7, $t0, movesUp    #if(pos[2]==2)
-  slt $t4, $s6, $s5       #if currCol > count
-  bne $t4, $zero, next2
-  addi $s5 $s5, -1
-  j addgen
+  j adgen
 next2:
-  addi $t0, $zero, 4
+  addi $t0, $zero, 5
   beq $t2, $t0, exit         #check if w is 4 -- all direction finish - jr $ra
   addi $s7, $s7, 1
+  addi $s6, $s6, 1
 
 movesUp:
   addi $t2, $t2, 1           #increment exit check
-  addi $t0, $t0, 3           #set temp to 3
+  add $t0, $zero, 3           #set temp to 3
   bne $s7, $t0, movesRight    #if(pos[2]==3)
-  slt $t4, $s6, $s4          #if currCol > count
-  bne $t4, $zero, next3
+  slt $t0, $s6, $s4          #if currRow > count
+  beq $t0, $zero, next3
   addi $s4 $s4, -1
-  j addgen
+  j adgen
 next3:
-  addi $t0, $zero, 4
+  addi $t0, $zero, 5
   beq $t2, $t0, exit         #check if w is 4 -- all direction finish - jr $ra
-  addi $s7, $s7, 1
-
-exit:
-  jr $ra
-next2:
-  addi $t0, $zero, 4
-  beq $t2, $t0, exit         #check if w is 4 -- all direction finish - jr $ra
-  addi $s7, $s7, 1
-
-movesUp:
-  addi $t2, $t2, 1           #increment exit check
-  addi $t0, $t0, 3           #set temp to 3
-  bne $s7, $t0, movesRight    #if(pos[2]==3)
-  slt $t4, $s6, $s4          #if currCol > count
-  bne $t4, $zero, next3
-  addi $s4 $s4, -1
-next3:
-  addi $t0, $zero, 4
-  beq $t2, $t0, exit         #check if w is 4 -- all direction finish - jr $ra
-  addi $s7, $s7, 1
-  j movesRight
+  add $s7, $zero, $zero
+	j movesRight
 exit:
   jr $ra
   
 adgen:
-lw $t0, 8($a0)
-lw $t1, 12($a0)
-mul $t3, $t0, $t1
-add $t7 , $s4, $zero
-add $t6 , $s5, $zero
-add $t5 , $zero, $zero
-add $t4 , $zero, $zero
-addi $s2 , $zero, -1
+	lw $t0, 8($a0)
+	lw $t1, 12($a0)
+	mul $t3, $t0, $t1
+	add $t7 , $s4, $zero
+	add $t6 , $s5, $zero
+	add $t5 , $zero, $zero
+	add $t4 , $zero, $zero
+	addi $s2 , $zero, -1
 
 adgenloop:
-addi $s2, $s2, 1
-slt $t0, $s2, $t3
-bne $t0, $zero, moves
-lw $t2, 4($a0)
-mul $t0, $t7, $t2
-add $s3, $t0, $t6
+	addi $s2, $s2, 1
+	slt $t0, $s2, $t3
+	beq $t0, $zero, moves
+	lw $t2, 4($a0)
+	mul $t0, $t7, $t2
+	add $s3, $t0, $t6
 
 ifbranch:
-lw $t1, 12($a0)
-addi $t0, $t1, -1
-beq  $t4, $t0, elsebranch
-addi $t4 , $t4, 1
-addi $t6, $t6, 1
-j SAD
+	lw $t1, 12($a0)
+	addi $t0, $t1, -1
+	beq  $t4, $t0, elsebranch
+	addi $t4 , $t4, 1
+	addi $t6, $t6, 1
+	j SAD
 
 elsebranch:
-add $t4, $zero, $zero
-addi $t5, $t5, 1
-add $t6 , $s5, $zero
-addi $t7, $t7, 1
-
+	add $t4, $zero, $zero
+	addi $t5, $t5, 1
+	add $t6 , $s5, $zero
+	addi $t7, $t7, 1
 
 SAD:
-bne $s2, $zero, bob # if were starting at the left hand corner of the window
-add $s0, $zero, $zero # if we're starting ath the left hand corner reset sum to 0 
-bob: 
-sll $t0, $s3, 2 # t0 = frame index * 4
-add $t0, $t0, $a1 #t0 = adress of frame[frame_index]
-lw $t0, 0($t0) # t0 = whats in frame[frame_index]
-sll $t1, $s2, 2 # t1 = window_index*4
-add $t1, $t1, $a2 # t1 = address of window[window_index]
-lw $t1, 0($t1) # t1 = whats in window[window_index]
-slt $t2, $t0, $t1 # t2 = 1 if whats in frame[frame_index] is less than whats in window[window_index] else t2 is 0
-bne $t2, $zero, flip #if whats in frame[frame_index] is less than whats in window[window_index] go to flip else move forward
-sub $t0, $t0, $t1 #t0 > t1 so subtract and store in t0
-j addtos #jump past flip
+	bne $s2, $zero, bob # if were starting at the left hand corner of the window
+	add $s0, $zero, $zero # if we're starting ath the left hand corner reset sum to 0 
+	bob: 
+	sll $t0, $s3, 2 # t0 = frame index * 4
+	add $t0, $t0, $a1 #t0 = adress of frame[frame_index]
+	lw $t0, 0($t0) # t0 = whats in frame[frame_index]
+	sll $t1, $s2, 2 # t1 = window_index*4
+	add $t1, $t1, $a2 # t1 = address of window[window_index]
+	lw $t1, 0($t1) # t1 = whats in window[window_index]
+	slt $t2, $t0, $t1 # t2 = 1 if whats in frame[frame_index] is less than whats in window[window_index] else t2 is 0
+	bne $t2, $zero, flip #if whats in frame[frame_index] is less than whats in window[window_index] go to flip else moves forward
+	sub $t0, $t0, $t1 #t0 > t1 so subtract and store in t0
+	j addtos #jump past flip
 flip:
-sub $t0, $t1, $t0 #t1 > t0 so sumtract and store in t0
+	sub $t0, $t1, $t0 #t1 > t0 so sumtract and store in t0
 addtos:
-add $s0, $s0, $t0 # add new sum to current sum from before
-addi $t0, $s2, 1 # add 1 plus the index in the window
-bne $t0, $t3, adgenloop # if at the end of the window look for found and new best
-beq $s0, $zero, found # if SUM is == 0 return cordinates
-slt $t0, $s0, $s1 #if new sum is less than our current best set the new best
-beq $t0, $zero, adgenloop
+	add $s0, $s0, $t0 # add new sum to current sum from before
+	addi $t0, $s2, 1 # add 1 plus the index in the window
+	bne $t0, $t3, adgenloop # if at the end of the window look for found and new best
+	beq $s0, $zero, found # if SUM is == 0 return cordinates
+	slt $t0, $s0, $s1 #if new sum is less than our current best set the new best
+	beq $t0, $zero, adgenloop
 newbest:
-add $s1, $s0, $zero # set new best sum and cordinates
-add $v0, $s4, $zero
-add $v1, $s5, $zero
-j adgenloop #CHANGE THIS LATER 
+	add $s1, $s0, $zero # set new best sum and cordinates
+	add $v0, $s4, $zero
+	add $v1, $s5, $zero
+	j adgenloop #CHANGE THIS LATER 
 found:
-add $v0, $s4, $zero# 
-add $v1, $s5, $zero
-jr $ra
+	add $v0, $s4, $zero# 
+	add $v1, $s5, $zero
+	jr $ra
 
 	
 
