@@ -827,7 +827,7 @@ add $s5, $zero, $zero				# Set currCol to 0
 add $s6, $zero, $zero       # initialize count to 0
 add $s7, $zero, $zero       #initialize direction to 0
 j adgen
-move:
+moves:
   lw $t0, 0($a0)				# Set t0 to frame number of rows
   lw $t1, 8($a0)				# Set t1 to window number of rows
   sub $t8, $t0, $t1		# Set t8 to rowMax = frameRowSize - windowRowSize	
@@ -905,7 +905,7 @@ addi $s2 , $zero, -1
 adgenloop:
 addi $s2, $s2, 1
 slt $t0, $s2, $t3
-bne $t0, $zero, move
+bne $t0, $zero, moves
 lw $t2, 4($a0)
 mul $t0, $t7, $t2
 add $s3, $t0, $t6
