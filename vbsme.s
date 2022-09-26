@@ -821,9 +821,6 @@ vbsme:
 #
 # 
 addi $s1, $zero, 32767
-lw $t1, 8($a0)
-lw $t2, 12($a0)
-mul $s6, $t1, $t2;
 moves:
 adgen:
 lw $t0, 8($a0)
