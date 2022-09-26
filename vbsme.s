@@ -852,7 +852,6 @@ j SAD
 elsebranch:
 addi $t4, $t4, 1
 addi $t7, $t7, 1
-j SAD
 
 SAD:
 bne $s2, $zero, bob # if were starting at the left hand corner of the window
