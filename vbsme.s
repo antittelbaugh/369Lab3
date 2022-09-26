@@ -1017,7 +1017,7 @@ addi $t0, $s2, 1 # add 1 plus the index in the window
 bne $t0, $t3, adgenloop # if at the end of the window look for found and new best
 beq $s0, $zero, found # if SUM is == 0 return cordinates
 slt $t0, $s0, $s1 #if new sum is less than our current best set the new best
-bne $t0, $zero, adgenloop
+beq $t0, $zero, adgenloop
 newbest:
 add $s1, $s0, $zero # set new best sum and cordinates
 add $v0, $s4, $zero
