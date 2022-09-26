@@ -944,7 +944,7 @@ sub $t0, $t1, $t0 #t1 > t0 so sumtract and store in t0
 addtos:
 add $s0, $s0, $t0 # add new sum to current sum from before
 addi $t0, $s2, 1 # add 1 plus the index in the window
-beq $t0, $s6, adgenloop # if at the end of the window look for found and new best
+beq $t0, $t3, adgenloop # if at the end of the window look for found and new best
 bne $s0, $zero, found # if SUM is == 0 return cordinates
 slt $t0, $s0, $s1 #if new sum is less than our current best set the new best
 beq $t0, $zero, adgenloop
