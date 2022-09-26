@@ -826,8 +826,8 @@ add $s4, $zero, $zero				# Set currRow to 0
 add $s5, $zero, $zero				# Set currCol to 0
 add $s6, $zero, $zero       # initialize count to 0
 add $s7, $zero, $zero       #initialize direction to 0
-j adgen
-moves:
+
+move:
   lw $t0, 0($a0)				# Set t0 to frame number of rows
   lw $t1, 8($a0)				# Set t1 to window number of rows
   sub $t8, $t0, $t1		# Set t8 to rowMax = frameRowSize - windowRowSize	
@@ -835,6 +835,7 @@ moves:
   lw $t1, 12($a0)				# Set t1 to window number of columns
   sub $t9, $t0, $t1			# Set t9 to colMax = frameColSize - windowColSize
   add $t2, $zero, $zero   #initialize exit check 't2' to 0
+
 moveRight:
   addi $t2, $t2, 1           #increment exit check
   bne $s7, $zero, moveDown   #if (pos[2]==0)
@@ -842,7 +843,7 @@ moveRight:
   slt $t4, $s5, $t5          #t4 = (currCol<colDiff-count)
   beq $t4, $zero, next       #if (t4==0), next
   addi $s5, $s5, 1           #currCol++ 
-  j adgen
+  j addgen
 next:
   addi $t0, $zero, 4
   beq $t2, $t0, exit         #check if w is 4 -- all direction finish - jr $ra
@@ -850,13 +851,13 @@ next:
 
 moveDown:
   addi $t2, $t2, 1           #increment exit check
-  addi $t9, $t9, 1           #set temp to 1
+  addi $t0, $t0, 1           #set temp to 1
   bne $s7, $t9, moveLeft     #if (pos[2]==1)
   sub $t5, $t8, $s6          #t5 = rowDiff-count
   slt $t4, $s4, $t5          #t4 = (currRow<rowDiff-count)
   beq $t4, $zero, next1      #if (t4==0), next
   addi $s4, $s4, 1           #currRow++ 
-  j adgen
+  j addgen
 next1:
   addi $t0, $zero, 4
   beq $t2, $t0, exit         #check if w is 4 -- all direction finish - jr $ra
@@ -864,13 +865,12 @@ next1:
 
 moveLeft:
   addi $t2, $t2, 1           #increment exit check
-  add $t9, $zero, $zero
-  addi $t9, $t9, 2        #set temp to 2
-  bne $s7, $t9, moveUp    #if(pos[2]==2)
+  add $t0, $zero, $zero
+  addi $t0, $t0, 2        #set temp to 2
+  bne $s7, $t0, moveUp    #if(pos[2]==2)
   slt $t4, $s6, $s5       #if currCol > count
   bne $t4, $zero, next2
   addi $s5 $s5, -1
-  j adgen
 next2:
   addi $t0, $zero, 4
   beq $t2, $t0, exit         #check if w is 4 -- all direction finish - jr $ra
@@ -878,12 +878,11 @@ next2:
 
 moveUp:
   addi $t2, $t2, 1           #increment exit check
-  addi $t9, $t9, 3           #set temp to 3
-  bne $s7, $t9, moveRight    #if(pos[2]==3)
+  addi $t0, $t0, 3           #set temp to 3
+  bne $s7, $t0, moveRight    #if(pos[2]==3)
   slt $t4, $s6, $s4          #if currCol > count
   bne $t4, $zero, next3
   addi $s4 $s4, -1
-  j adgen
 next3:
   addi $t0, $zero, 4
   beq $t2, $t0, exit         #check if w is 4 -- all direction finish - jr $ra
