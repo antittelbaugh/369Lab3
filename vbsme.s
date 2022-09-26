@@ -905,7 +905,7 @@ addi $s2 , $zero, -1
 adgenloop:
 addi $s2, $s2, 1
 slt $t0, $s2, $t3
-beq $t0, $zero, moves
+bne $t0, $zero, move
 lw $t2, 4($a0)
 mul $t0, $t7, $t2
 add $s3, $t0, $t6
@@ -914,15 +914,16 @@ ifbranch:
 lw $t1, 12($a0)
 addi $t0, $t1, -1
 beq  $t4, $t0, elsebranch
-add $t4 , $zero, $zero
+addi $t4 , $t4, 1
 addi $t6, $t6, 1
-addi $t5, $t5, 1
 j SAD
 
 elsebranch:
-addi $t4, $t4, 1
+add $t4, $zero, $zero
+addi $t5, $t5, 1
+add $t6 , $s5, $zero
 addi $t7, $t7, 1
-j SAD
+
 
 SAD:
 bne $s2, $zero, bob # if were starting at the left hand corner of the window
