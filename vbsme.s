@@ -913,7 +913,7 @@ add $s3, $t0, $t6
 ifbranch:
 lw $t1, 12($a0)
 addi $t0, $t1, -1
-bne  $t4, $t0, elsebranch
+beq  $t4, $t0, elsebranch
 add $t4 , $zero, $zero
 addi $t6, $t6, 1
 addi $t5, $t5, 1
