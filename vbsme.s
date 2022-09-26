@@ -905,7 +905,7 @@ addi $s2 , $zero, -1
 adgenloop:
 addi $s2, $s2, 1
 slt $t0, $s2, $t3
-bne $t0, $zero, moves
+beq $t0, $zero, moves
 lw $t2, 4($a0)
 mul $t0, $t7, $t2
 add $s3, $t0, $t6
