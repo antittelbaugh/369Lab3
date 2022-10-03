@@ -52,9 +52,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, ALUResultHi, Zero);
 	       4'b0001 : ALUResult <= A - B;
 	       //MUL
 	       4'b0010 : begin
-	                   tmp <= (A*B);
-	                   ALUResult <= tmp[31:0];
-	                   ALUResultHi <= tmp[63:32];
+	                   {ALUResultHi,ALUResult} <= (A*B);
 	                end
 	       //bgez
 	       4'b0011 : begin
