@@ -13,7 +13,7 @@
 module IF_ID_RegFile(Clk, PCAddResult, Instruction, ID_PCAddResult, ID_Instruction);
     
     input Clk;
-    input reg [31:0] PCAddResult, Instruction;
+    input [31:0] PCAddResult, Instruction;
     output reg[31:0] ID_PCAddResult, ID_Instruction;
     
    
