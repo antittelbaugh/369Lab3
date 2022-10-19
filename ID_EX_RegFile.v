@@ -10,7 +10,7 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-module IDEXReg(Clk, ID_WB_Ctrl, ID_MEM_Ctrl, ID_PCAddResult, ID_SignExtend, ID_Read1, ID_Read2, ID_Instruction16_20, ID_Instruction5_11, EX_WBCtrl, EX_MEMCtrl, EX_RegDst, EX_ALUOp, EX_ALUSrc, EX_halfbyte, EX_PCAddResult, EX_Read1, EX_Read2, EX_SignExtend,EX_SignExtend_10_6,EX_Instruction16_20, EX_Instruction5_11);
+module IDEXReg(Clk, ID_WB_Ctrl, ID_MEM_Ctrl,ID_EX_Ctrl, ID_PCAddResult, ID_SignExtend,ID_SignExtend_10_6, ID_Read1, ID_Read2, ID_Instruction16_20, ID_Instruction5_11, EX_WBCtrl, EX_MEMCtrl, EX_RegDst, EX_ALUOp, EX_ALUSrc, EX_halfbyte, EX_PCAddResult, EX_Read1, EX_Read2, EX_SignExtend,EX_SignExtend_10_6,EX_Instruction16_20, EX_Instruction5_11);
     
     input Clk;
     input [3:0] ID_WB_Ctrl;
