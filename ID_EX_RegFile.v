@@ -38,7 +38,7 @@ always @(posedge Clk) begin
     EX_RegDst <= ID_EX_Ctrl[1:0];
     EX_ALUSrc<= ID_EX_Ctrl[2];
     EX_ALUOp <= ID_EX_Ctrl[6:3];
-    EX_halfByte <= ID_EX_Ctrl[8:7];
+    EX_halfbyte <= ID_EX_Ctrl[8:7];
     
     EX_PCAddResult <= ID_PCAddResult;
     EX_Read1 <= ID_Read1;
