@@ -13,8 +13,8 @@
 module MEM_WB_RegFile(Clk, MEM_WB_Ctrl, MEM_Read, PCAddResult, MEM_ALUResult, MEM_RegDst, WB_halfbyte, WB_MemToReg, WB_RegWrite, WB_PCAddResult, WB_Read, WB_ALUResult, WB_RegDst);
     
     input Clk;
-    input reg [3:0] MEM_WB_Ctrl;
-    input reg [31:0] MEM_Read, PCAddResult, MEM_ALUResult, MEM_RegDst;
+    input [3:0] MEM_WB_Ctrl;
+    input [31:0] MEM_Read, PCAddResult, MEM_ALUResult, MEM_RegDst;
     
     output reg WB_halfbyte;
     output reg [1:0] WB_MemToReg;
