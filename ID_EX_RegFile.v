@@ -14,7 +14,7 @@ module IDEXReg(Clk, ID_WB_Ctrl, ID_MEM_Ctrl, ID_PCAddResult, ID_SignExtend, ID_R
     
     input Clk;
     input [3:0] ID_WB_Ctrl;
-	input [4:0] ID_MEM_Ctrl;
+    input [4:0] ID_MEM_Ctrl;
     input [8:0] ID_EX_Ctrl;
     input [31:0] ID_PCAddResult, ID_SignExtend_10_6, ID_SignExtend, ID_Read1, ID_Read2;
     input [4:0]  ID_Instruction16_20, ID_Instruction5_11;
