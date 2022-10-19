@@ -14,7 +14,7 @@ module IF_ID_RegFile(Clk, PCAddResult, Instruction, ID_PCAddResult, ID_Instructi
     
     input Clk;
     input reg [31:0] PCAddResult, Instruction;
-    outpur reg[31:0] ID_PCAddResult, ID_Instruction;
+    output reg[31:0] ID_PCAddResult, ID_Instruction;
     
    
 always @(posedge Clk) begin
