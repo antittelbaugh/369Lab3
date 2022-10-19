@@ -54,16 +54,34 @@ module ALU32Bit(ALUControl, A, B, ALUResult, ALUResultHi, Zero);
 	       4'b0010 : begin
 	                   {ALUResultHi,ALUResult} <= (A*B);
 	                end
-	       //bgez
+	       //bgez or bltz
 	       4'b0011 : begin
-	                   if(A >= 0)begin
+	                  if (B == 1) begin
+                           if(A >= 0)begin
+                           ALUResult <= 1;
+                           end
+                           else begin
+                           ALUResult <= 0;
+                           end
+                       end
+                      else begin
+                        if(A < 0)begin
+                           ALUResult <= 1;
+                           end
+                           else begin
+                           ALUResult <= 0;
+                           end
+                           end
+                      end
+            //bgtz
+	       4'b0100 : begin
+	                   if(A > 0)begin
 	                   ALUResult <= 1;
 	                   end
 	                   else begin
 	                   ALUResult <= 0;
 	                   end
 	                  end
-
 	       //blez
 	       4'b0101 : begin
 	                   if(A <= 0)begin
@@ -74,7 +92,6 @@ module ALU32Bit(ALUControl, A, B, ALUResult, ALUResultHi, Zero);
 	                   end
 	                  end
 
-	       //and
 	       4'b1000 : ALUResult <= A & B;
 	       //or
 	       4'b1001 : ALUResult <= A | B;
