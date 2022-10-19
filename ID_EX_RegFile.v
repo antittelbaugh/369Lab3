@@ -13,11 +13,11 @@
 module IDEXReg(Clk, ID_WB_Ctrl, ID_MEM_Ctrl, ID_PCAddResult, ID_SignExtend, ID_Read1, ID_Read2, ID_Instruction16_20, ID_Instruction5_11, EX_WBCtrl, EX_MEMCtrl, EX_RegDst, EX_ALUOp, EX_ALUSrc, EX_halfbyte, EX_PCAddResult, EX_Read1, EX_Read2, EX_SignExtend,EX_SignExtend_10_6,EX_Instruction16_20, EX_Instruction5_11);
     
     input Clk;
-    input reg [3:0] ID_WB_Ctrl;
-    input reg [4:0] ID_Mem_Ctrl;
-    input reg [8:0] ID_EX_Ctrl;
-    input reg [31:0] ID_PCAddResult, ID_SignExtend_10_6, ID_SignExtend, ID_Read1, ID_Read2;
-    input reg [4:0]  ID_Instruction16_20, ID_Instruction5_11;
+    input [3:0] ID_WB_Ctrl;
+	input [4:0] ID_MEM_Ctrl;
+    input [8:0] ID_EX_Ctrl;
+    input [31:0] ID_PCAddResult, ID_SignExtend_10_6, ID_SignExtend, ID_Read1, ID_Read2;
+    input [4:0]  ID_Instruction16_20, ID_Instruction5_11;
 
     output reg [3:0] EX_WBCtrl;
     output reg [4:0] EX_MEMCtrl;
