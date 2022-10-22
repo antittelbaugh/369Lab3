@@ -86,14 +86,14 @@ module Data_Path(Reset, Clk);
     and testAnd( BEQ_sat,M_Branch, BranchSatsified);
     and BNEand(BNE_sat, M_BNE, ~BranchSatsified);
     or branchOr( PCSrc,  BNE_sat, BEQ_sat);
-    DataMemory(M_ALUResult, M_WriteMemData, Clk, M_MemWrite, M_MemRead, MEM_Read);
+    DataMemory dat(M_ALUResult, M_WriteMemData, Clk, M_MemWrite, M_MemRead, MEM_Read);
     
     
     MEM_WB_RegFile MEMWB(Clk, MEM_WB_Ctrl, MEM_Read, MEM_PCAddResult, M_ALUResult, MEM_RegDst, WB_halfbyte, WB_MemToReg, WB_RegWrite, WB_PCAddResult, WB_Read, WB_ALUResult, WB_RegDst);
     SignExtension_8 lb(WB_Read[7:0], loadByte);
     SignExtension lh(WB_Read[15:0], loadHalf);
     Mux32Bit2To1 lhlb(lhlbResult, loadByte, loadHalf, WB_halfbyt);
-    Mux32Bit4To1 MemtoReg(WriteData, WB_Read, WB_ALUResult,inC,inD, WB_MemToReg);
+    Mux32Bit4To1 MemtoReg(WriteData, WB_Read, WB_ALUResult,WB_PCAddResult,lhlbResult, WB_MemToReg);
 
    
 endmodule
