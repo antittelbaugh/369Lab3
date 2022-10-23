@@ -71,6 +71,13 @@ module Data_Path(Reset, Clk);
     wire ID_jump;
     wire [31:0] Read1_Result;
     wire [31:0] lhlbResult;
+    wire [25:0] EX_offset;
+    wire  EX_jump;
+    
+     wire M_jump;
+     wire [25:0] M_offset;
+     wire [31:0] M_Read1;
+     wire M_jr;
     
     
 
@@ -78,8 +85,8 @@ module Data_Path(Reset, Clk);
     InstructionMemory IMEM(PCResult, Instruction); 
     PCAdder PCA(PCResult, PCAddResult);
     ProgramCounter PCount(Address, PCResult, Reset, Clk);
-    Mux32Bit2To1 jrSrc(Read1_Result, Address_mux, EX_Read1, jr);
-    Mux32Bit2To1 jrResult(Address, Read1_Result, {ID_PCAddResult[31:28],Shifted_jr}, ID_jump);
+    Mux32Bit2To1 jrSrc(Read1_Result, Address_mux, M_Read1, M_jr);
+    Mux32Bit2To1 jrResult(Address, Read1_Result, {MEM_PCAddResult[31:28],Shifted_jr}, M_jump);
 
 
 	
@@ -89,10 +96,10 @@ module Data_Path(Reset, Clk);
     SignExtension Sign1(ID_Instruction[15:0], ID_SignExtend);
     Controller  Con1(ID_Instruction[31:26],ID_EX_Ctrl, ID_MEM_Ctrl, ID_WB_Ctrl, ID_jump);
     SignExtension_5  SignEX1(ID_Instruction[10:6], ID_SignExtend_10_6);
-    ShiftLeft2_26_28 SignEX2(ID_Instruction[25:0], Shifted_jr);
+    
 
 
-    IDEXReg IDEX(Clk,Reset, ID_WB_Ctrl, ID_MEM_Ctrl, ID_PCAddResult, ID_EX_Ctrl, ID_SignExtend, ID_SignExtend_10_6, ID_Read1, ID_Read2, ID_Instruction[20:16], ID_Instruction[15:11], EX_WBCtrl, EX_MEMCtrl, EX_RegDst, EX_ALUOp, EX_ALUSrc, EX_halfbyte, EX_PCAddResult, EX_Read1, EX_Read2, EX_SignExtend,EX_SignExtend_10_6,EX_Instruction16_20, EX_Instruction5_11);
+    IDEXReg IDEX(Clk,Reset, ID_WB_Ctrl, ID_MEM_Ctrl, ID_PCAddResult, ID_EX_Ctrl, ID_SignExtend, ID_SignExtend_10_6, ID_Read1, ID_Read2, ID_Instruction[20:16], ID_Instruction[15:11], EX_WBCtrl, EX_MEMCtrl, EX_RegDst, EX_ALUOp, EX_ALUSrc, EX_halfbyte, EX_PCAddResult, EX_Read1, EX_Read2, EX_SignExtend,EX_SignExtend_10_6,EX_Instruction16_20, EX_Instruction5_11, ID_jump, EX_jump, ID_Instruction[25:0], EX_offset);
         
     Mux3To1_5bit REGDST(EX_WriteRegData, EX_Instruction16_20, EX_Instruction5_11,31, EX_RegDst);
     ALUControl ALUCON(EX_ALUOp,EX_SignExtend[5:0],jr,shift,ALUCon); 
@@ -106,13 +113,14 @@ module Data_Path(Reset, Clk);
     Adder branchadd(EX_BranchAddResult, shiftedImmeadiate, EX_PCAddResult);
      
         
-    EX_MEM EXMEM(EX_WBCtrl, EX_MEMCtrl, EX_PCAddResult, EX_BranchAddResult, EX_ZeroFlag, EX_ALUResult, EX_Read2, EX_WriteRegData,Clk, Reset, MEM_WB_Ctrl, M_BranchCon,M_MemRead, M_Branch, M_MemWrite, M_BNE,MEM_PCAddResult, M_BranchAddResult, M_ZeroFlag, M_ALUResult, M_WriteMemData,MEM_RegDst); 
+    EX_MEM EXMEM(EX_WBCtrl, EX_MEMCtrl, EX_PCAddResult, EX_BranchAddResult, EX_ZeroFlag, EX_ALUResult, EX_Read2, EX_WriteRegData,Clk, Reset, MEM_WB_Ctrl, M_BranchCon,M_MemRead, M_Branch, M_MemWrite, M_BNE,MEM_PCAddResult, M_BranchAddResult, M_ZeroFlag, M_ALUResult, M_WriteMemData,MEM_RegDst, EX_jump, EX_offset, EX_Read1, jr, M_jump, M_offset, M_Read1, M_jr); 
 
     Mux1bit2To1 specBranch(BranchSatsified, M_ZeroFlag, M_ALUResult[0],  M_BranchCon);
     and testAnd( BEQ_sat,M_Branch, BranchSatsified);
     and BNEand(BNE_sat, M_BNE, ~BranchSatsified);
     or branchOr( PCSrc,  BNE_sat, BEQ_sat);
     DataMemory dat(M_ALUResult, M_WriteMemData, Clk, M_MemWrite, M_MemRead, MEM_Read);
+    ShiftLeft2_26_28 SignEX2(M_offset, Shifted_jr);
     
     
     MEM_WB_RegFile MEMWB(Clk, Reset, MEM_WB_Ctrl, MEM_Read, MEM_PCAddResult, M_ALUResult, MEM_RegDst, WB_halfbyte, WB_MemToReg, WB_RegWrite, WB_PCAddResult, WB_Read, WB_ALUResult, WB_RegDst);
