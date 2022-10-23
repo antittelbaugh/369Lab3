@@ -75,7 +75,7 @@ module Data_Path(Reset, Clk);
     PCAdder PCA(PCResult, PCAddResult);
     ProgramCounter PCount(Address, PCResult, Reset, Clk);
     Mux32Bit2To1 jrSrc(Read1_Result, Address_mux, EX_Read1, jr);
-	Mux32Bit2To1 jrResult(PCResult, Read1_Result, {ID_PCAddResult[31:28],Shifted_jr}, ID_jump);
+    Mux32Bit2To1 jrResult(Address, Read1_Result, {ID_PCAddResult[31:28],Shifted_jr}, ID_jump);
 
 
 	
