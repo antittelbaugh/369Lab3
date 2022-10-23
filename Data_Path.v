@@ -68,6 +68,7 @@ module Data_Path(Reset, Clk);
     wire [31:0] Address_mux;
     wire [27:0] Shifted_jr;
     wire ID_jump;
+    wire [31:0] Read1_Result;
     
 
     Mux32Bit2To1 PCSrc(Address_mux, PCAddResult,  M_BranchAddResult, WB_PCsrc);
@@ -80,6 +81,13 @@ module Data_Path(Reset, Clk);
 
 	
     IF_ID_RegFile IFID(Clk, PCAddResult, Instruction, ID_PCAddResult, ID_Instruction);
+	
+    RegisterFile(ID_Instruction[25:21], ID_Instruction[20:16], WB_RegDst, WriteData, WB_RegWrite, ID_Read1, ID_Read2, Clk, Rst);
+    SignExtension Sign1(ID_Instruction[15:0], ID_SignExtend);
+    Controller(ID_Instruction[31:26],ID_EX_Ctrl, ID_MEM_Ctrl, ID_WB_Ctrl, ID_jump);
+    SignExtension_5(ID_Instruction[10:6], ID_SignExtend_10_6);
+    ShiftLeft2_26_28(ID_Instruction[25:0], Shifted_jr);
+
 
     IDEXReg IDEX(Clk, ID_WB_Ctrl, ID_MEM_Ctrl, ID_PCAddResult, ID_EX_Ctrl, ID_SignExtend, ID_SignExtend_10_6, ID_Read1, ID_Read2, ID_Instruction16_20, ID_Instruction5_11, EX_WBCtrl, EX_MEMCtrl, EX_RegDst, EX_ALUOp, EX_ALUSrc, EX_halfbyte, EX_PCAddResult, EX_Read1, EX_Read2, EX_SignExtend,EX_SignExtend_10_6,EX_Instruction16_20, EX_Instruction5_11);
         
