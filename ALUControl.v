@@ -27,72 +27,72 @@ module ALUControl(ALUOp,func,jr,shift,ALUcon);
     output reg  jr;// 3 lhlb, [2:1] Mem to Reg, 0Reg Write
     output reg shift; // 1 jump
     
-    always@(ALUOp) begin
+    always@(ALUOp, func) begin
         case(ALUOp)
         //R-type
         4'b0000:begin
-            case(func)
+            //case(func)
                 //SLL
-                6'b000000:begin
+                if( func == 6'b000000) begin
                     ALUcon <= 4'b1100;
                     jr <= 0;
                     shift <= 1;
                 end
                 //srl
-                6'b000010:begin
+                else if(func ==6'b000010) begin
                     ALUcon <= 4'b1101;
                     jr <= 0;
                     shift <= 1;
                 end
                 //jr
-                6'b001000:begin
+                else if(func ==6'b001000)begin
                     ALUcon <= 4'bxxxx;
                     jr <= 1;
                     shift <= 0;
                 end
                 //add
-                6'b100000:begin
+                else if(func ==6'b100000)begin
                     ALUcon <= 4'b0000;
                     jr <= 0;
                     shift <= 0;
                 end
                 //sub
-                6'b100010:begin
+                else if(func ==6'b100010)begin
                     ALUcon <= 4'b0001;
                     jr <= 0;
                     shift <= 0;
                 end
                 //and
-                6'b100100:begin
+                else if(func ==6'b100100)begin
                     ALUcon <= 4'b1000;
                     jr <= 0;
                     shift <= 0;
                 end
                 //or
-                6'b100101:begin
+                else if(func ==6'b100101)begin
                     ALUcon <= 4'b1001;
                     jr <= 0;
                     shift <= 0;
                 end
                 //xor
-                6'b100110:begin
+                else if(func ==6'b100110)begin
                     ALUcon <= 4'b1011;
                     jr <= 0;
                     shift <= 0;
                 end
                 //nor
-                6'b100111:begin
+                else if(func ==6'b100111)begin
                     ALUcon <= 4'b1010;
                     jr <= 0;
                     shift <= 0;
                 end
                 //slt
-                6'b101010:begin
+                else if(func ==6'b101010)begin
                     ALUcon <= 4'b1110;
                     jr <= 0;
                     shift <= 0;
                 end
-            endcase
+            //endcase
         end
         //sub
         4'b0001:begin
