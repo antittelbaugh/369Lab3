@@ -58,19 +58,20 @@ module Data_Path(Reset, Clk);
     wire BEQ_sat;
     wire BNE_sat;
     wire PCSrc;
-    wire loadByte;
-    wire loadhalf;
-    wire  WriteData;
+    wire [31:0]  loadByte;
+    wire [31:0]  loadhalf;
+    wire [31:0] WriteData;
     wire [31:0] Address;       
     wire [31:0] mem [127:0];
     wire [31:0] Instruction;
     wire [31:0] PCResult;
+    wire [31:0]address_mux;
     
 
-    InstructionMemory(Address, Instruction); 
-    PCAdder(PCResult, PCAddResult);
-    Mux32Bit2To1 PCSrc(Address, PCAddResult, PCResult, PCsrc);
-    ProgramCounter(Address, PCResult, Reset, Clk);
+    Mux32Bit2To1 PCSrc(Address_mux, PCAddResult,  M_BranchAddResult, WB_PCsrc);
+    InstructionMemory <PUT NAME HERE>(Address, Instruction); 
+    PCAdder <PUTNAME HERE>(PCResult, PCAddResult);
+    ProgramCounter <PUT NAME HERE>(Address, PCResult, Reset, Clk);
 
 	
     IF_ID_RegFile IFID(Clk, PCAddResult, Instruction, ID_PCAddResult, ID_Instruction);
