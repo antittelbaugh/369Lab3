@@ -101,9 +101,9 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
 	       //xor
 	       4'b1011 : ALUResult <= A ^ B;
 	       //sll
-	       4'b1100 : ALUResult <= A << B;
+	       4'b1100 : ALUResult <= B << A;
 	       //srl
-	       4'b1101 : ALUResult <= A >> B;
+	       4'b1101 : ALUResult <= B >> A;
 	       //slt
 	       4'b1110 :begin
 	                   if(A < B)begin
