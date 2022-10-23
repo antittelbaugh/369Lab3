@@ -65,13 +65,17 @@ module Data_Path(Reset, Clk);
     wire [31:0] mem [127:0];
     wire [31:0] Instruction;
     wire [31:0] PCResult;
-    wire [31:0]address_mux;
+    wire [31:0] Address_mux;
+    wire [27:0] Shifted_jr;
     
 
     Mux32Bit2To1 PCSrc(Address_mux, PCAddResult,  M_BranchAddResult, WB_PCsrc);
-    InstructionMemory <PUT NAME HERE>(Address, Instruction); 
-    PCAdder <PUTNAME HERE>(PCResult, PCAddResult);
-    ProgramCounter <PUT NAME HERE>(Address, PCResult, Reset, Clk);
+    InstructionMemory IMEM(Address, Instruction); 
+    PCAdder PCA(PCResult, PCAddResult);
+    ProgramCounter PCount(Address, PCResult, Reset, Clk);
+    Mux32Bit2To1 jrSrc(Read1_Result, Address_mux, EX_Read1, jr);
+    Mux32Bit2To1 jrResult(Address, Read1_Result, ID_PCAddResult[31:27,Shifted_jr], ID_jump);
+
 
 	
     IF_ID_RegFile IFID(Clk, PCAddResult, Instruction, ID_PCAddResult, ID_Instruction);
