@@ -101,7 +101,7 @@ module Data_Path(Reset, Clk);
     and testAnd( BEQ_sat,M_Branch, BranchSatsified);
     and BNEand(BNE_sat, M_BNE, ~BranchSatsified);
     or branchOr( PCSrc,  BNE_sat, BEQ_sat);
-    DataMemory(M_ALUResult, M_WriteMemData, Clk, M_MemWrite, M_MemRead, MEM_Read);
+    DataMemory dat(M_ALUResult, M_WriteMemData, Clk, M_MemWrite, M_MemRead, MEM_Read);
     
     
     MEM_WB_RegFile MEMWB(Clk, MEM_WB_Ctrl, MEM_Read, MEM_PCAddResult, M_ALUResult, MEM_RegDst, WB_halfbyte, WB_MemToReg, WB_RegWrite, WB_PCAddResult, WB_Read, WB_ALUResult, WB_RegDst);
