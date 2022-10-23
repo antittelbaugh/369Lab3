@@ -67,6 +67,7 @@ module Data_Path(Reset, Clk);
     wire [31:0] PCResult;
     wire [31:0] Address_mux;
     wire [27:0] Shifted_jr;
+    wire ID_jump;
     
 
     Mux32Bit2To1 PCSrc(Address_mux, PCAddResult,  M_BranchAddResult, WB_PCsrc);
