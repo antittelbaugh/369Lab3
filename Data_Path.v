@@ -71,11 +71,11 @@ module Data_Path(Reset, Clk);
     
 
     Mux32Bit2To1 PCSrc(Address_mux, PCAddResult,  M_BranchAddResult, WB_PCsrc);
-    InstructionMemory IMEM(Address, Instruction); 
+    InstructionMemory IMEM(PCResult, Instruction); 
     PCAdder PCA(PCResult, PCAddResult);
     ProgramCounter PCount(Address, PCResult, Reset, Clk);
     Mux32Bit2To1 jrSrc(Read1_Result, Address_mux, EX_Read1, jr);
-    Mux32Bit2To1 jrResult(Address, Read1_Result, {ID_PCAddResult[31:27],Shifted_jr}, ID_jump);
+    Mux32Bit2To1 jrResult(PCResult, Read1_Result, {ID_PCAddResult[31:27],Shifted_jr}, ID_jump);
 
 
 	
