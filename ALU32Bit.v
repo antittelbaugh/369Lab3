@@ -26,14 +26,14 @@
 //   operations needed to support. 
 ////////////////////////////////////////////////////////////////////////////////
 
-module ALU32Bit(ALUControl, A, B, ALUResult, ALUResultHi, Zero);
+module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
 
-	input [4:0] ALUControl; // control bits for ALU operation
+	input [3:0] ALUControl; // control bits for ALU operation
                                 // you need to adjust the bitwidth as needed
 	input [31:0] A, B;	    // inputs
     reg [63:0] tmp;
 	output reg [31:0] ALUResult;
-	output reg [31:0] ALUResultHi;	// answer
+	reg [31:0] ALUResultHi;	// answer
 	output reg Zero;	    // Zero=1 if ALUResult == 0
 	
 	always@(ALUResult) begin
@@ -92,6 +92,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, ALUResultHi, Zero);
 	                   end
 	                  end
 
+	       //and
 	       4'b1000 : ALUResult <= A & B;
 	       //or
 	       4'b1001 : ALUResult <= A | B;
