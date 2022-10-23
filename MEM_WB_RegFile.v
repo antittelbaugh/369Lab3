@@ -10,9 +10,10 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-module MEM_WB_RegFile(Clk, MEM_WB_Ctrl, MEM_Read, PCAddResult, MEM_ALUResult, MEM_RegDst, WB_halfbyte, WB_MemToReg, WB_RegWrite, WB_PCAddResult, WB_Read, WB_ALUResult, WB_RegDst);
+module MEM_WB_RegFile(Clk, Reset, MEM_WB_Ctrl, MEM_Read, PCAddResult, MEM_ALUResult, MEM_RegDst, WB_halfbyte, WB_MemToReg, WB_RegWrite, WB_PCAddResult, WB_Read, WB_ALUResult, WB_RegDst);
     
     input Clk;
+    input Reset;
     input [3:0] MEM_WB_Ctrl;
     input [31:0] MEM_Read, PCAddResult, MEM_ALUResult;
     input [4:0] MEM_RegDst;
@@ -25,8 +26,7 @@ module MEM_WB_RegFile(Clk, MEM_WB_Ctrl, MEM_Read, PCAddResult, MEM_ALUResult, ME
     
 	
 always @(posedge Clk) begin
-
-    
+    if (Reset == 1) begin
     WB_RegWrite <= MEM_WB_Ctrl [0];
     WB_MemToReg <= MEM_WB_Ctrl [2:1];
     WB_halfbyte <= MEM_WB_Ctrl [3];
@@ -34,6 +34,16 @@ always @(posedge Clk) begin
     WB_Read <= MEM_Read;
     WB_ALUResult <= MEM_ALUResult;
     WB_RegDst <= MEM_RegDst;
+    end
+    else begin
+    WB_RegWrite <= MEM_WB_Ctrl [0];
+    WB_MemToReg <= MEM_WB_Ctrl [2:1];
+    WB_halfbyte <= MEM_WB_Ctrl [3];
+    WB_PCAddResult <= PCAddResult;
+    WB_Read <= MEM_Read;
+    WB_ALUResult <= MEM_ALUResult;
+    WB_RegDst <= MEM_RegDst;
+    end
     
  end
 endmodule
