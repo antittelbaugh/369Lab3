@@ -32,7 +32,7 @@ module Controller(OpCode,EX, M, WB, ID);
 	       //R-type
 	       6'b000000: begin
 	           EX[8:7] <= 0; //shsb
-	           EX[6:3] <= 3'b0000;// ALUOP
+	           EX[6:3] <= 4'b0000;// ALUOP
 	           EX[2] <= 0; // ALUSrc
 	           EX[1:0] <= 1;//RegDst
 	           M[4] <= 0;//Branch
@@ -334,7 +334,7 @@ module Controller(OpCode,EX, M, WB, ID);
                ID <= 0; //jump
            end
            //SW
-           6'b101001: begin
+           6'b101011: begin
                EX[8:7] <= 0; //shsb
 	           EX[6:3] <= 4'b0101;//[3:2] ALUOP
 	           EX[2] <=1; // ALUSrc
