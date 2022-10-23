@@ -82,7 +82,7 @@ module Data_Path(Reset, Clk);
 
 
 	
-    IF_ID_RegFile IFID(Clk, PCAddResult, Instruction, ID_PCAddResult, ID_Instruction);
+    IF_ID_RegFile IFID(Clk, Reset, PCAddResult, Instruction, ID_PCAddResult, ID_Instruction);
 	
     RegisterFile RegFile1(ID_Instruction[25:21], ID_Instruction[20:16], WB_RegDst, WriteData, WB_RegWrite, ID_Read1, ID_Read2, Clk, Reset);
     SignExtension Sign1(ID_Instruction[15:0], ID_SignExtend);
@@ -91,10 +91,10 @@ module Data_Path(Reset, Clk);
     ShiftLeft2_26_28 SignEX2(ID_Instruction[25:0], Shifted_jr);
 
 
-    IDEXReg IDEX(Clk, ID_WB_Ctrl, ID_MEM_Ctrl, ID_PCAddResult, ID_EX_Ctrl, ID_SignExtend, ID_SignExtend_10_6, ID_Read1, ID_Read2, ID_Instruction[20:16], ID_Instruction[15:11], EX_WBCtrl, EX_MEMCtrl, EX_RegDst, EX_ALUOp, EX_ALUSrc, EX_halfbyte, EX_PCAddResult, EX_Read1, EX_Read2, EX_SignExtend,EX_SignExtend_10_6,EX_Instruction16_20, EX_Instruction5_11);
+    IDEXReg IDEX(Clk,Reset, ID_WB_Ctrl, ID_MEM_Ctrl, ID_PCAddResult, ID_EX_Ctrl, ID_SignExtend, ID_SignExtend_10_6, ID_Read1, ID_Read2, ID_Instruction[20:16], ID_Instruction[15:11], EX_WBCtrl, EX_MEMCtrl, EX_RegDst, EX_ALUOp, EX_ALUSrc, EX_halfbyte, EX_PCAddResult, EX_Read1, EX_Read2, EX_SignExtend,EX_SignExtend_10_6,EX_Instruction16_20, EX_Instruction5_11);
         
     Mux3To1_5bit REGDST(EX_WriteRegData, EX_Instruction16_20, EX_Instruction5_11,31, EX_RegDst);
-    ALUControl ALUCON(EX_ALUOp,EX_SignExtend[5:0],jr,shift,ALUCon); 
+    ALUControl ALUCON(EX_ALUOp,EX_SignExtend[6:0],jr,shift,ALUCon); 
     Mux32Bit2To1 ALUSrc(ALUSrcResult, EX_Read2, EX_SignExtend, EX_ALUSrc);
     Mux32Bit2To1 Shift(ALUB, ALUSrcResult, EX_SignExtend_10_6, shift);
     ALU32Bit ALU(ALUCon, EX_Read1, ALUB, EX_ALUResult, EX_ZeroFlag);
@@ -114,7 +114,7 @@ module Data_Path(Reset, Clk);
     DataMemory dat(M_ALUResult, M_WriteMemData, Clk, M_MemWrite, M_MemRead, MEM_Read);
     
     
-    MEM_WB_RegFile MEMWB(Clk, MEM_WB_Ctrl, MEM_Read, MEM_PCAddResult, M_ALUResult, MEM_RegDst, WB_halfbyte, WB_MemToReg, WB_RegWrite, WB_PCAddResult, WB_Read, WB_ALUResult, WB_RegDst);
+    MEM_WB_RegFile MEMWB(Clk, Reset, MEM_WB_Ctrl, MEM_Read, MEM_PCAddResult, M_ALUResult, MEM_RegDst, WB_halfbyte, WB_MemToReg, WB_RegWrite, WB_PCAddResult, WB_Read, WB_ALUResult, WB_RegDst);
     SignExtension_8 lb(WB_Read[7:0], loadByte);
     SignExtension lh(WB_Read[15:0], loadHalf);
     Mux32Bit2To1 lhlb(lhlbResult, loadByte, loadHalf, WB_halfbyte);
