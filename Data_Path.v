@@ -78,6 +78,7 @@ module Data_Path(Reset, Clk);
      wire [25:0] M_offset;
      wire [31:0] M_Read1;
      wire M_jr;
+     wire [31:0] specBext;
     
     
 
@@ -103,7 +104,9 @@ module Data_Path(Reset, Clk);
         
     Mux3To1_5bit REGDST(EX_WriteRegData, EX_Instruction16_20, EX_Instruction5_11,31, EX_RegDst);
     ALUControl ALUCON(EX_ALUOp,EX_SignExtend[5:0],jr,shift,ALUCon); 
-    Mux32Bit2To1 ALUSrc(ALUB, EX_Read2, EX_SignExtend, EX_ALUSrc);
+    Mux32Bit2To1 ALUSrc(ALUSrcResult, EX_Read2, EX_SignExtend, EX_ALUSrc);
+    SignExtension_5  SignEXB(EX_Instruction16_20, specBext);
+    Mux32Bit2To1 SpecB(ALUB, ALUSrcResult, specBext, EX_MEMCtrl[1]);
     Mux32Bit2To1 Shift(ALUA, EX_Read1, EX_SignExtend_10_6, shift);
     ALU32Bit ALU(ALUCon, ALUA, ALUB, EX_ALUResult, EX_ZeroFlag);
     SignExtension_8 sb(EX_Read2[7:0], storeByte);
@@ -127,7 +130,7 @@ module Data_Path(Reset, Clk);
     SignExtension_8 lb(WB_Read[7:0], loadByte);
     SignExtension lh(WB_Read[15:0], loadHalf);
     Mux32Bit2To1 lhlb(lhlbResult, loadByte, loadHalf, WB_halfbyte);
-    Mux32Bit4To1 MemtoReg(WriteData, WB_Read, WB_ALUResult,lhlbResult,WB_PCAddResult, WB_MemToReg);
+    Mux32Bit4To1 MemtoReg(WriteData, WB_Read, WB_ALUResult,WB_PCAddResult,lhlbResult, WB_MemToReg);
 
    
 endmodule
