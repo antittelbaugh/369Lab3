@@ -15,7 +15,7 @@ module Mux32Bit4To1(out, inA, inB,inC,inD, sel);
     input [31:0] inB;
     input [31:0] inC;
     input [31:0] inD;
-    input sel;
+    input [1:0] sel;
 
     always @(*) begin
     if(sel==0)begin
