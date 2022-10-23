@@ -42,7 +42,7 @@ module DataMemory(Address, WriteData, Clk, MemWrite, MemRead, ReadData);
     input Clk;
     input MemWrite; 		// Control signal for memory write 
     input MemRead; 		// Control signal for memory read 
-	reg[31:0] memory[0:1023]
+	reg[31:0] memory[0:1023];
 
     output reg[31:0] ReadData; // Contents of memory location at Address
 
@@ -51,17 +51,17 @@ module DataMemory(Address, WriteData, Clk, MemWrite, MemRead, ReadData);
     initial begin
 	ReadData <= 0;
 	    for (i = 0; i < 1024; i = i + 1) begin
-    		memory[i] = i;
+    		memory[i] = 0;
  	 end
     end
 
-always @(posedge clk) begin
+always @(posedge Clk) begin
 
   if (MemWrite == 1'b1) begin
 	memory[Address[11:2]] <= WriteData;
   end
 end
-always @( Address) begin
+always @( Address, negedge Clk) begin
   if (MemRead == 1'b1) begin
 	  ReadData <= memory[Address[11:2]];
   end
