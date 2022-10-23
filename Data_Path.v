@@ -61,9 +61,17 @@ module Data_Path(Reset, Clk);
     wire loadByte;
     wire loadhalf;
     wire  WriteData;
-
+    wire [31:0] Address;       
+    wire [31:0] mem [127:0];
+    wire [31:0] Instruction;
+    wire [31:0] PCResult;
     
 
+    InstructionMemory(Address, Instruction); 
+    PCAdder(PCResult, PCAddResult);
+    Mux32Bit2To1 PCSrc(Address, PCAddResult, PCResult, PCsrc);
+
+	
     IF_ID_RegFile IFID(Clk, PCAddResult, Instruction, ID_PCAddResult, ID_Instruction);
 
     IDEXReg IDEX(Clk, ID_WB_Ctrl, ID_MEM_Ctrl, ID_PCAddResult, ID_EX_Ctrl, ID_SignExtend, ID_SignExtend_10_6, ID_Read1, ID_Read2, ID_Instruction16_20, ID_Instruction5_11, EX_WBCtrl, EX_MEMCtrl, EX_RegDst, EX_ALUOp, EX_ALUSrc, EX_halfbyte, EX_PCAddResult, EX_Read1, EX_Read2, EX_SignExtend,EX_SignExtend_10_6,EX_Instruction16_20, EX_Instruction5_11);
@@ -86,14 +94,14 @@ module Data_Path(Reset, Clk);
     and testAnd( BEQ_sat,M_Branch, BranchSatsified);
     and BNEand(BNE_sat, M_BNE, ~BranchSatsified);
     or branchOr( PCSrc,  BNE_sat, BEQ_sat);
-    DataMemory dat(M_ALUResult, M_WriteMemData, Clk, M_MemWrite, M_MemRead, MEM_Read);
+    DataMemory(M_ALUResult, M_WriteMemData, Clk, M_MemWrite, M_MemRead, MEM_Read);
     
     
     MEM_WB_RegFile MEMWB(Clk, MEM_WB_Ctrl, MEM_Read, MEM_PCAddResult, M_ALUResult, MEM_RegDst, WB_halfbyte, WB_MemToReg, WB_RegWrite, WB_PCAddResult, WB_Read, WB_ALUResult, WB_RegDst);
     SignExtension_8 lb(WB_Read[7:0], loadByte);
     SignExtension lh(WB_Read[15:0], loadHalf);
     Mux32Bit2To1 lhlb(lhlbResult, loadByte, loadHalf, WB_halfbyt);
-    Mux32Bit4To1 MemtoReg(WriteData, WB_Read, WB_ALUResult,WB_PCAddResult,lhlbResult, WB_MemToReg);
+    Mux32Bit4To1 MemtoReg(WriteData, WB_Read, WB_ALUResult,inC,inD, WB_MemToReg);
 
    
 endmodule
