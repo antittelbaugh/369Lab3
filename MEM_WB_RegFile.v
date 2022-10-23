@@ -14,12 +14,14 @@ module MEM_WB_RegFile(Clk, MEM_WB_Ctrl, MEM_Read, PCAddResult, MEM_ALUResult, ME
     
     input Clk;
     input [3:0] MEM_WB_Ctrl;
-    input [31:0] MEM_Read, PCAddResult, MEM_ALUResult, MEM_RegDst;
+    input [31:0] MEM_Read, PCAddResult, MEM_ALUResult;
+    input [4:0] MEM_RegDst;
     
     output reg WB_halfbyte;
     output reg [1:0] WB_MemToReg;
     output reg WB_RegWrite;
-    output reg [31:0] WB_PCAddResult, WB_Read, WB_ALUResult, WB_RegDst;
+    output reg [31:0] WB_PCAddResult, WB_Read, WB_ALUResult;
+    output reg [4:0] WB_RegDst;
     
 	
 always @(posedge Clk) begin
@@ -31,7 +33,7 @@ always @(posedge Clk) begin
     WB_PCAddResult <= PCAddResult;
     WB_Read <= MEM_Read;
     WB_ALUResult <= MEM_ALUResult;
-    WB_RegDst <= MEM_RegDst
+    WB_RegDst <= MEM_RegDst;
     
  end
 endmodule
