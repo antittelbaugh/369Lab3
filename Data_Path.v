@@ -70,6 +70,7 @@ module Data_Path(Reset, Clk);
     InstructionMemory(Address, Instruction); 
     PCAdder(PCResult, PCAddResult);
     Mux32Bit2To1 PCSrc(Address, PCAddResult, PCResult, PCsrc);
+    ProgramCounter(Address, PCResult, Reset, Clk);
 
 	
     IF_ID_RegFile IFID(Clk, PCAddResult, Instruction, ID_PCAddResult, ID_Instruction);
