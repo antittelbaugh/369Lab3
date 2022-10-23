@@ -116,7 +116,7 @@ module Data_Path(Reset, Clk);
     Adder branchadd(EX_BranchAddResult, shiftedImmeadiate, EX_PCAddResult);
      
         
-    EX_MEM EXMEM(EX_WBCtrl, EX_MEMCtrl, EX_PCAddResult, EX_BranchAddResult, EX_ZeroFlag, EX_ALUResult, EX_Read2, EX_WriteRegData,Clk, Reset, MEM_WB_Ctrl, M_BranchCon,M_MemRead, M_Branch, M_MemWrite, M_BNE,MEM_PCAddResult, M_BranchAddResult, M_ZeroFlag, M_ALUResult, M_WriteMemData,MEM_RegDst, EX_jump, EX_offset, EX_Read1, jr, M_jump, M_offset, M_Read1, M_jr); 
+    EX_MEM EXMEM(EX_WBCtrl, EX_MEMCtrl, EX_PCAddResult, EX_BranchAddResult, EX_ZeroFlag, EX_ALUResult,EX_WriteMemData, EX_WriteRegData,Clk, Reset, MEM_WB_Ctrl, M_BranchCon,M_MemRead, M_Branch, M_MemWrite, M_BNE,MEM_PCAddResult, M_BranchAddResult, M_ZeroFlag, M_ALUResult, M_WriteMemData,MEM_RegDst, EX_jump, EX_offset, EX_Read1, jr, M_jump, M_offset, M_Read1, M_jr); 
 
     Mux1bit2To1 specBranch(BranchSatsified, M_ZeroFlag, M_ALUResult[0],  M_BranchCon);
     and testAnd( BEQ_sat,M_Branch, BranchSatsified);
