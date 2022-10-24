@@ -56,7 +56,7 @@ module DataMemory(Address, WriteData, Clk, MemWrite, MemRead, ReadData);
     $readmemh("data_memory.mem", memory);
     end
 
-always @(posedge Clk) begin
+	always @(posedge Clk, posedge MemWrite) begin
 
   if (MemWrite == 1'b1) begin
 	memory[Address[11:2]] <= WriteData;
