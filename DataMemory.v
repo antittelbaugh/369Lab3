@@ -50,9 +50,10 @@ module DataMemory(Address, WriteData, Clk, MemWrite, MemRead, ReadData);
 
     initial begin
 	ReadData <= 0;
-	    for (i = 0; i < 1024; i = i + 1) begin
+	for (i = 0; i < 1024; i = i + 1) begin
     		memory[i] = 0;
  	 end
+    $readmemh("data_memory.mem", memory);
     end
 
 always @(posedge Clk) begin
