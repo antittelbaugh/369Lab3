@@ -18,7 +18,7 @@ module IF_ID_RegFile(Clk, Reset, PCAddResult, Instruction, ID_PCAddResult, ID_In
     output reg[31:0] ID_PCAddResult, ID_Instruction;
     
    
-    always @(posedge Clk, posedge Reset) begin
+    always @(posedge Clk) begin
 
     if (Reset == 1) begin
     ID_PCAddResult <= 0;
