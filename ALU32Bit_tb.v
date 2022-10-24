@@ -9,9 +9,8 @@
 
 module ALU32Bit_tb(); 
 
-	reg [4:0] ALUControl;   // control bits for ALU operation
+	reg [3:0] ALUControl;   // control bits for ALU operation
 	reg [31:0] A, B;	        // inputs
-    wire [31:0] ALUResultHi;
 	wire [31:0] ALUResult;	// answer
 	wire Zero;	        // Zero=1 if ALUResult == 0
 
@@ -20,7 +19,6 @@ module ALU32Bit_tb();
         .A(A), 
         .B(B), 
         .ALUResult(ALUResult), 
-        .ALUResultHi(ALUResultHi),
         .Zero(Zero)
     );
 
