@@ -50,19 +50,18 @@ module DataMemory(Address, WriteData, Clk, MemWrite, MemRead, ReadData);
 
     initial begin
 	ReadData <= 0;
-	for (i = 0; i < 1024; i = i + 1) begin
+	    for (i = 0; i < 1024; i = i + 1) begin
     		memory[i] = 0;
  	 end
-    $readmemh("data_memory.mem", memory);
     end
 
-	always @(posedge Clk, posedge MemWrite) begin
+always @(posedge Clk) begin
 
   if (MemWrite == 1'b1) begin
 	memory[Address[11:2]] <= WriteData;
   end
 end
-always @( Address, negedge Clk) begin
+always @(negedge Clk) begin
   if (MemRead == 1'b1) begin
 	  ReadData <= memory[Address[11:2]];
   end
