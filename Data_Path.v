@@ -1,12 +1,10 @@
-
-
 `timescale 1ns / 1ps
 
 module Data_Path(Reset, Clk);
     input Reset, Clk;
     (* mark_debug = "true" *) wire [31:0] PCResult;
     (* mark_debug = "true" *)wire [31:0] WriteData;
-    (* mark_debug = "true" *)wire [31:0]  WB_PCAddResult
+    (* mark_debug = "true" *)wire [31:0]  WB_PCAddResult;
     wire [31:0] PCAddResult, Instruction;
     wire [31:0] EX_BranchAddResult;
     wire EX_ZeroFlag;
