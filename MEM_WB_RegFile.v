@@ -27,7 +27,7 @@ module MEM_WB_RegFile(Clk, Reset, MEM_WB_Ctrl, MEM_Read, PCAddResult, MEM_ALURes
      output reg WB_jr;
     
 	
-always @(posedge Clk) begin
+	always @(posedge Clk, posedge Reset) begin
     if (Reset == 1) begin
     WB_RegWrite <= 0;
     WB_MemToReg <= 0;
