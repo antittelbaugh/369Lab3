@@ -35,7 +35,7 @@ module IDEXReg(Clk, Reset, ID_WB_Ctrl, ID_MEM_Ctrl, ID_PCAddResult, ID_EX_Ctrl, 
     output reg [4:0] EX_Instruction16_20, EX_Instruction5_11;
 	
 	
-always @(posedge Clk) begin
+	always @(posedge Clk, posedge Reset) begin
     if (Reset == 1) begin
         EX_WBCtrl <= 0;
         EX_jump <= 0;
