@@ -11,64 +11,55 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-
 module RegisterFile_tb();
 
-	reg [4:0] ReadRegister1_tb;
-	reg [4:0] ReadRegister2_tb;
-	reg	[4:0] WriteRegister_tb;
-	reg [31:0] WriteData_tb;
-	reg RegWrite_tb;
-	reg Clk_tb;
-
-	wire [31:0] ReadData1_tb;
-	wire [31:0] ReadData2_tb;
+	reg [4:0] ReadRegister1;
+	reg [4:0] ReadRegister2;
+	reg	[4:0] WriteRegister;
+	reg [31:0] WriteData;
+	reg RegWrite;
+	reg Clk, Rst;
+    reg [4:0] i;
+	wire [31:0] ReadData1;
+	wire [31:0] ReadData2;
 
 
 	RegisterFile u0(
-		.ReadRegister1(ReadRegister1_tb), 
-		.ReadRegister2(ReadRegister2_tb), 
-		.WriteRegister(WriteRegister_tb), 
-		.WriteData(WriteData_tb), 
-		.RegWrite(RegWrite_tb), 
-		.Clk(Clk_tb), 
-		.ReadData1(ReadData1_tb), 
-		.ReadData2(ReadData2_tb)
+		.ReadRegister1(ReadRegister1), 
+		.ReadRegister2(ReadRegister2), 
+		.WriteRegister(WriteRegister), 
+		.WriteData(WriteData), 
+		.RegWrite(RegWrite), 
+		.Clk(Clk), 
+		.ReadData1(ReadData1), 
+		.ReadData2(ReadData2),
+		.Rst(Rst)
 	);
 
-	always begin
-		Clk_tb <= 1'b0;
-		#10;
-		Clk_tb <= 1'b1;
-		#10;
-	end
-	
-
-	integer i;
 	initial begin
-
-	   RegWrite_tb <= 1;
-	   @(posedge Clk_tb);
-	   for(i = 8; i < 27; i = i + 1) begin
-	       WriteRegister_tb <= i;
-	       WriteData_tb <= 5*i;
-	       @(posedge Clk_tb);
-	       #10;
-	   end
-	   RegWrite_tb <= 0;
-	   @(posedge Clk_tb)
-	   for(i = 8; i <26; i = i + 1) begin
-	       WriteRegister_tb <= i;
-	       WriteData_tb <= 5*i;
-	       ReadRegister1_tb <= i;
-	       ReadRegister2_tb <= i + 1;
-	       #10;
-	   end
-	   
-	   
+	   Rst<=0;
+		Clk <= 1'b0;
+		forever #10 Clk <= ~Clk;
 	end
-	
-	
+
+	initial begin
+	#100
+    RegWrite <= 1;                    
+        for (i=8; i<25; i=i+1) begin           
+           WriteRegister <= i; 
+           WriteData <= i*3;
+           #100;
+        end
+    
+   
+    RegWrite <= 0;                
+        for (i=8; i<25; i=i+2) begin           
+            ReadRegister1 <= i;
+            ReadRegister2 <= i+1; 
+            #100;
+        end    
+        
+	end
 	
 
 endmodule
