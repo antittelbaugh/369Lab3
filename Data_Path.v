@@ -62,7 +62,7 @@ module Data_Path(Reset, Clk);
     wire BNE_sat;
     wire PCSrc;
     wire [31:0]  loadByte;
-    wire [31:0]  loadhalf;
+    wire [31:0]  loadHalf;
     
     wire [31:0] Address;       
     wire [31:0] mem [127:0];
@@ -79,6 +79,8 @@ module Data_Path(Reset, Clk);
      wire [31:0] M_Read1;
      wire M_jr;
      wire [31:0] specBext;
+     wire Reg_Write;
+     wire [31:0] WriteDataint;
     
     
 
@@ -93,7 +95,7 @@ module Data_Path(Reset, Clk);
 	
     IF_ID_RegFile IFID(Clk, Reset, PCAddResult, Instruction, ID_PCAddResult, ID_Instruction);
 	
-    RegisterFile RegFile1(ID_Instruction[25:21], ID_Instruction[20:16], WB_RegDst, WriteData, WB_RegWrite, ID_Read1, ID_Read2, Clk, Reset);
+    RegisterFile RegFile1(ID_Instruction[25:21], ID_Instruction[20:16], WB_RegDst, WriteData, Reg_Write, ID_Read1, ID_Read2, Clk, Reset);
     SignExtension Sign1(ID_Instruction[15:0], ID_SignExtend);
     Controller  Con1(ID_Instruction[31:26],ID_EX_Ctrl, ID_MEM_Ctrl, ID_WB_Ctrl, ID_jump);
     SignExtension_5  SignEX1(ID_Instruction[10:6], ID_SignExtend_10_6);
@@ -116,7 +118,7 @@ module Data_Path(Reset, Clk);
     Adder branchadd(EX_BranchAddResult, shiftedImmeadiate, EX_PCAddResult);
      
         
-    EX_MEM EXMEM(EX_WBCtrl, EX_MEMCtrl, EX_PCAddResult, EX_BranchAddResult, EX_ZeroFlag, EX_ALUResult,EX_WriteMemData, EX_WriteRegData,Clk, Reset, MEM_WB_Ctrl, M_BranchCon,M_MemRead, M_Branch, M_MemWrite, M_BNE,MEM_PCAddResult, M_BranchAddResult, M_ZeroFlag, M_ALUResult, M_WriteMemData,MEM_RegDst, EX_jump, EX_offset, EX_Read1, jr, M_jump, M_offset, M_Read1, M_jr); 
+    EX_MEM EXMEM(EX_WBCtrl, EX_MEMCtrl, EX_PCAddResult, EX_BranchAddResult, EX_ZeroFlag, EX_ALUResult, EX_WriteMemData, EX_WriteRegData,Clk, Reset, MEM_WB_Ctrl, M_BranchCon,M_MemRead, M_Branch, M_MemWrite, M_BNE,MEM_PCAddResult, M_BranchAddResult, M_ZeroFlag, M_ALUResult, M_WriteMemData,MEM_RegDst, EX_jump, EX_offset, EX_Read1, jr, M_jump, M_offset, M_Read1, M_jr); 
 
     Mux1bit2To1 specBranch(BranchSatsified, M_ZeroFlag, M_ALUResult[0],  M_BranchCon);
     and testAnd( BEQ_sat,M_Branch, BranchSatsified);
@@ -126,11 +128,13 @@ module Data_Path(Reset, Clk);
     ShiftLeft2_26_28 SignEX2(M_offset, Shifted_jr);
     
     
-    MEM_WB_RegFile MEMWB(Clk, Reset, MEM_WB_Ctrl, MEM_Read, MEM_PCAddResult, M_ALUResult, MEM_RegDst, WB_halfbyte, WB_MemToReg, WB_RegWrite, WB_PCAddResult, WB_Read, WB_ALUResult, WB_RegDst);
+    MEM_WB_RegFile MEMWB(Clk, Reset, MEM_WB_Ctrl, MEM_Read, MEM_PCAddResult, M_ALUResult, MEM_RegDst, WB_halfbyte, WB_MemToReg, WB_RegWrite, WB_PCAddResult, WB_Read, WB_ALUResult, WB_RegDst, M_jr, WB_jr);
     SignExtension_8 lb(WB_Read[7:0], loadByte);
     SignExtension lh(WB_Read[15:0], loadHalf);
     Mux32Bit2To1 lhlb(lhlbResult, loadByte, loadHalf, WB_halfbyte);
-    Mux32Bit4To1 MemtoReg(WriteData, WB_Read, WB_ALUResult,WB_PCAddResult,lhlbResult, WB_MemToReg);
+    Mux32Bit4To1 MemtoReg(WriteDataint, WB_Read, WB_ALUResult,WB_PCAddResult,lhlbResult, WB_MemToReg);
+    and RegW(Reg_Write, WB_RegWrite, ~WB_jr);
+    Mux32Bit2To1 writeDisplay(WriteData, 0, WriteDataint, Reg_Write);
 
    
 endmodule
