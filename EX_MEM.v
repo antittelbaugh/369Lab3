@@ -53,7 +53,7 @@ module EX_MEM(EX_WB, EX_M, EX_PCinc, EX_BranchAddResult, EX_ZeroFlag, EX_ALUResu
     output reg [31:0] M_Read1;
     output reg M_jr;
     
-    always @(posedge Clk, posedge Reset) begin
+    always @(posedge Clk) begin
     if (Reset == 1) begin
     
     M_jump <= 0;
