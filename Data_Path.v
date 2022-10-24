@@ -106,7 +106,7 @@ module Data_Path(Reset, Clk);
 
     IDEXReg IDEX(Clk,Reset, ID_WB_Ctrl, ID_MEM_Ctrl, ID_PCAddResult, ID_EX_Ctrl, ID_SignExtend, ID_SignExtend_10_6, ID_Read1, ID_Read2, ID_Instruction[20:16], ID_Instruction[15:11], EX_WBCtrl, EX_MEMCtrl, EX_RegDst, EX_ALUOp, EX_ALUSrc, EX_halfbyte, EX_PCAddResult, EX_Read1, EX_Read2, EX_SignExtend,EX_SignExtend_10_6,EX_Instruction16_20, EX_Instruction5_11, ID_jump, EX_jump, ID_Instruction[25:0], EX_offset);
         
-    Mux3To1_5bit REGDST(EX_WriteRegData, EX_Instruction16_20, EX_Instruction5_11,31, EX_RegDst);
+	Mux3To1_5bit REGDST(EX_WriteRegData, EX_Instruction16_20, EX_Instruction5_11,5'b11111, EX_RegDst);
     ALUControl ALUCON(EX_ALUOp,EX_SignExtend[5:0],jr,shift,ALUCon); 
     Mux32Bit2To1 ALUSrc(ALUSrcResult, EX_Read2, EX_SignExtend, EX_ALUSrc);
     SignExtension_5  SignEXB(EX_Instruction16_20, specBext);
