@@ -1,10 +1,10 @@
 `timescale 1ns / 1ps
 
-module Data_Path(Reset, Clk);
+module Data_Path(Reset, Clk, WriteData, WB_PCAddResult);
     input Reset, Clk;
     (* mark_debug = "true" *) wire [31:0] PCResult;
-    (* mark_debug = "true" *)wire [31:0] WriteData;
-    (* mark_debug = "true" *)wire [31:0]  WB_PCAddResult;
+    output wire [31:0] WriteData;
+    output wire [31:0]  WB_PCAddResult;
     wire [31:0] PCAddResult, Instruction;
     wire [31:0] EX_BranchAddResult;
     wire EX_ZeroFlag;
@@ -20,12 +20,13 @@ module Data_Path(Reset, Clk);
     wire [3:0] M_WB;
     wire M_BranchCon;
     wire M_MemRead;
-    wire M_Branch;
+    (*mark_debug = "true" *)wire M_Branch;
     wire M_MemWrite;
     wire M_BNE;
     wire [31:0] M_PCinc;
     wire [31:0] M_BranchAddResult;
-    wire M_ZeroFlag;
+    (*mark_debug = "true" *) wire M_BranchCon;
+    (*mark_debug = "true" *)wire M_ZeroFlag;
     wire [31:0] M_ALUResult;
     wire [31:0] M_WriteMemData;
     wire [31:0] M_WriteRegData;
@@ -60,7 +61,7 @@ module Data_Path(Reset, Clk);
     wire BranchSatsified;
     wire BEQ_sat;
     wire BNE_sat;
-    wire PCSrc;
+    (*mark_debug = "true" *)wire PCSrc;
     wire [31:0]  loadByte;
     wire [31:0]  loadHalf;
     
@@ -138,3 +139,4 @@ module Data_Path(Reset, Clk);
 
    
 endmodule
+
