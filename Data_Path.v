@@ -6,6 +6,7 @@ module Data_Path(Reset, Clk);
     input Reset, Clk;
     (* mark_debug = "true" *) wire [31:0] PCResult;
     (* mark_debug = "true" *)wire [31:0] WriteData;
+    (* mark_debug = "true" *)wire [31:0]  WB_PCAddResult
     wire [31:0] PCAddResult, Instruction;
     wire [31:0] EX_BranchAddResult;
     wire EX_ZeroFlag;
@@ -44,7 +45,8 @@ module Data_Path(Reset, Clk);
     wire WB_halfbyte;
     wire [1:0] WB_MemToReg;
     wire WB_RegWrite;
-    wire [31:0] WB_PCAddResult, WB_Read, WB_ALUResult;
+	
+    wire [31:0]WB_Read, WB_ALUResult;
     wire [4:0] WB_RegDst;
     
     wire jr;
