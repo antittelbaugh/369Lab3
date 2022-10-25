@@ -30,7 +30,7 @@ module TopLevel(Reset, Clk, out7, en_out);
     wire [31:0] Instruction;
     ClkDiv clk(Clk, Reset, ClkOut);
     Data_Path(Reset, ClkOut, WriteData, WB_PCAddResult);
-    Two4DigitDisplay(Clk, Instruction[15:0], Instruction[31:16], out7, en_out);
+    Two4DigitDisplay(Clk, WriteData, WB_PCAddResult, out7, en_out);
     
     
     
