@@ -24,10 +24,12 @@ module TopLevel(Reset, Clk, out7, en_out);
     input Reset, Clk;
     output [6:0] out7;
     output wire [7:0] en_out;
+    wire [31:0] WriteData;
+    wire [31:0]  WB_PCAddResult;
     wire ClkOut;
     wire [31:0] Instruction;
     ClkDiv clk(Clk, Reset, ClkOut);
-    InstructionFetchUnit fetch(Instruction, Reset, ClkOut);
+    Data_Path(Reset, ClkOut, WriteData, WB_PCAddResult);
     Two4DigitDisplay(Clk, Instruction[15:0], Instruction[31:16], out7, en_out);
     
     
