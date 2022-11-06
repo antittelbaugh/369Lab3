@@ -21,7 +21,7 @@
 module HazardDetectionUnit();
 
 	input [4:0] IF_ID_Rs, IF_ID_Rt, ID_EX_Rd, EX_MEM_Rd, MEM_WB_Rd;
-	input jumpReg, jump,  IF_ID_MemWrite, ID_EX_RegWrite, ID_EX_MemRead, EX_MEM_MemRead, MEM_WB_RegWrite, MEM_WB_MemToReg, branch;
+	input jumpReg, jump, ID_EX_RegWrite,  EX_MEM_RegWrite, MEM_WB_RegWrite, branch;
 	output reg PCWrite,IF_ID_Write, control, IF_ID_flush;
 
 	always @(*) begin
@@ -33,21 +33,39 @@ module HazardDetectionUnit();
 		}
 		else if(jumpReg==1){
 			PCWrite <= 1;
-            IF_ID_Write <= 0;
-            control <= 1;
+            		IF_ID_Write <= 0;
+           	 	control <= 1;
 			IF_ID_flush <= 1;
+		}
+		else{
+			PCWrite<=1;
+			IF_ID_Write<=1;
+			control<=1;
+			IF_ID_flush<=0;
 		}
 		if(jump==1){
 			PCWrite <= 1;
-            IF_ID_Write <= 0;
-            control <= 1;
+            		IF_ID_Write <= 0;
+            		control <= 1;
 			IF_ID_flush <= 1;
+		}
+		else{
+			PCWrite<=1;
+			IF_ID_Write<=1;
+			control<=1;
+			IF_ID_flush<=0;
 		}
 		if (branch == 1){
 			PCWrite <= 1;
-            IF_ID_Write <= 0;
-            control <= 1;
+            		IF_ID_Write <= 0;
+            		control <= 1;
 			IF_ID_flush <= 1;
+		}
+		else{
+			PCWrite<=1;
+			IF_ID_Write<=1;
+			control<=1;
+			IF_ID_flush<=0;
 		}
 
 		if((MEM_WB_RegWrite==1)&&((MEM_WB_Rd==IF_ID_Rs) || (MEM_WB_Rd==IF_ID_Rt)){
@@ -62,8 +80,7 @@ module HazardDetectionUnit();
 			control<=1;
 			IF_ID_flush<=0;
 		}
-		
-		if((EX_MEM_MemRead==1) && ((EX_MEM_Rd==IF_ID_Rs)||(EX_MEM_Rd==IF_ID_Rt))){
+		if((EX_MEM_RegWrite==1)&&((EX_MEM_Rd==IF_ID_Rs) || (EX_MEM_Rd==IF_ID_Rt)){
 			PCWrite<=0;
 			IF_ID_Write<=0;
 			control<=0;
@@ -75,6 +92,7 @@ module HazardDetectionUnit();
 			control<=1;
 			IF_ID_flush<=0;
 		}
+		
 		if((ID_EX_RegWrite==1) &&((ID_EX_Rd==IF_ID_Rs)||(ID_EX_Rd==IF_ID_Rt)){
 			PCWrite<=0;
 			IF_ID_Write<=0;
@@ -87,17 +105,6 @@ module HazardDetectionUnit();
 			control<=1;
 			IF_ID_flush<=0;
 		}
-		if((ID_EX_MemWrite==1) &&((ID_EX_Rd==IF_ID_Rs)||(ID_EX_Rd==IF_ID_Rt)){
-			PCWrite<=0;
-			IF_ID_Write<=0;
-			control<=0;
-			IF_ID_flush<=0;
-		}
-		else{
-			PCWrite<=1;
-			IF_ID_Write<=1;
-			control<=1;
-			IF_ID_flush<=0;
-		}
+		
 
 endmodule
