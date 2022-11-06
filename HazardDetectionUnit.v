@@ -25,86 +25,61 @@ module HazardDetectionUnit(IF_ID_Rs, IF_ID_Rt, ID_EX_Rd, EX_MEM_Rd, MEM_WB_Rd,ju
 	output reg PCWrite,IF_ID_Write, control, IF_ID_flush;
 
 	always @(*) begin
-		if(jumpReg==1) && ((MEM_WB_Rd==IF_ID_Rs)||(ID_EX_Rd==IF_ID_Rs)||(EX_MEM_Rd==IF_ID_Rs)) begin
+		if(jumpReg==1) && ((MEM_WB_Rd==IF_ID_Rs)||(ID_EX_Rd==IF_ID_Rs)||(EX_MEM_Rd==IF_ID_Rs))) begin
 			PCWrite<=0;
 			IF_ID_Write<=0;
 			control<=0;
 			IF_ID_flush<=0;
 		end
-		else if(jumpReg==1)begin
-			PCWrite <= 1;
-            		IF_ID_Write <= 0;
-           	 	control <= 1;
-			IF_ID_flush <= 1;
-		end
-		else begin
-			PCWrite<=1;
-			IF_ID_Write<=1;
-			control<=1;
-			IF_ID_flush<=0;
-		end
-		if(jump==1) begin
+		else if(jumpReg==1) begin
 			PCWrite <= 1;
             		IF_ID_Write <= 0;
             		control <= 1;
 			IF_ID_flush <= 1;
 		end
-		else begin
-			PCWrite<=1;
-			IF_ID_Write<=1;
-			control<=1;
-			IF_ID_flush<=0;
-		end
-		if (branch == 1) begin
+		
+		else if(jump==1) begin
 			PCWrite <= 1;
-            		IF_ID_Write <= 0;
-            		control <= 1;
+           		 IF_ID_Write <= 0;
+            		 control <= 1;
 			IF_ID_flush <= 1;
 		end
-		else begin
-			PCWrite<=1;
-			IF_ID_Write<=1;
-			control<=1;
-			IF_ID_flush<=0;
+		
+		else if (branch == 1) begin
+			PCWrite <= 1;
+            		IF_ID_Write <= 0;
+           		control <= 1;
+			IF_ID_flush <= 1;
 		end
+		
 
-		if((MEM_WB_RegWrite==1)&&((MEM_WB_Rd==IF_ID_Rs) || (MEM_WB_Rd==IF_ID_Rt)) begin
+		else if((MEM_WB_RegWrite==1)&&((MEM_WB_Rd==IF_ID_Rs) || (MEM_WB_Rd==IF_ID_Rt))) begin
 			PCWrite<=0;
 			IF_ID_Write<=0;
 			control<=0;
-			IF_ID_flush<=0;
-		end
-		else begin
-			PCWrite<=1;
-			IF_ID_Write<=1;
-			control<=1;
-			IF_ID_flush<=0;
-		end
-		   if((EX_MEM_RegWrite==1)&&((EX_MEM_Rd==IF_ID_Rs) || (EX_MEM_Rd==IF_ID_Rt)) begin
-			PCWrite<=0;
-			IF_ID_Write<=0;
-			control<=0;
-			IF_ID_flush<=0;
-		   end
-		else begin
-			PCWrite<=1;
-			IF_ID_Write<=1;
-			control<=1;
 			IF_ID_flush<=0;
 		end
 		
-		      if((ID_EX_RegWrite==1) &&((ID_EX_Rd==IF_ID_Rs)||(ID_EX_Rd==IF_ID_Rt)) begin
+		else if((EX_MEM_RegWrite==1)&&((EX_MEM_Rd==IF_ID_Rs) || (EX_MEM_Rd==IF_ID_Rt))) begin
 			PCWrite<=0;
 			IF_ID_Write<=0;
 			control<=0;
 			IF_ID_flush<=0;
-		      end
-		else begin
+		end
+		
+		
+		else if((ID_EX_RegWrite==1) &&((ID_EX_Rd==IF_ID_Rs)||(ID_EX_Rd==IF_ID_Rt))) begin
+			PCWrite<=0;
+			IF_ID_Write<=0;
+			control<=0;
+			IF_ID_flush<=0;
+		}
+		else begin 
 			PCWrite<=1;
 			IF_ID_Write<=1;
 			control<=1;
 			IF_ID_flush<=0;
-		end
+		
 		
 
 endmodule
