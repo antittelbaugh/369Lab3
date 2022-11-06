@@ -81,5 +81,5 @@ module HazardDetectionUnit(IF_ID_Rs, IF_ID_Rt, ID_EX_Rd, EX_MEM_Rd, MEM_WB_Rd,ju
 			IF_ID_flush<=0;
 		
 		end
-
+	end
 endmodule
