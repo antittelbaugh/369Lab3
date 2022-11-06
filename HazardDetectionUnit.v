@@ -18,7 +18,7 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-module HazardDetectionUnit();
+module HazardDetectionUnit(IF_ID_Rs, IF_ID_Rt, ID_EX_Rd, EX_MEM_Rd, MEM_WB_Rd,jumpReg, jump, ID_EX_RegWrite,  EX_MEM_RegWrite, MEM_WB_RegWrite, branch,PCWrite,IF_ID_Write, control, IF_ID_flush);
 
 	input [4:0] IF_ID_Rs, IF_ID_Rt, ID_EX_Rd, EX_MEM_Rd, MEM_WB_Rd;
 	input jumpReg, jump, ID_EX_RegWrite,  EX_MEM_RegWrite, MEM_WB_RegWrite, branch;
