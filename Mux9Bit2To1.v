@@ -22,9 +22,7 @@ module Mux9Bit2To1(out, inA, inB, sel);
     else if( sel ==1)begin
         out <= inB;
     end
-    else begin
-        out <= inC;
-    end
+  
         
 end
 
