@@ -53,14 +53,14 @@ module HazardDetectionUnit(IF_ID_Rs, IF_ID_Rt, ID_EX_Rd, EX_MEM_Rd, MEM_WB_Rd,ju
 		end
 		
 
-		else if((MEM_WB_RegWrite==1)&&((MEM_WB_Rd==IF_ID_Rs) || (MEM_WB_Rd==IF_ID_Rt))) begin
+		else if(((MEM_WB_RegWrite==1)&&(MEM_WB_Rd!=0))&&((MEM_WB_Rd==IF_ID_Rs) || (MEM_WB_Rd==IF_ID_Rt))) begin
 			PCWrite<=0;
 			IF_ID_Write<=0;
 			control<=0;
 			IF_ID_flush<=0;
 		end
 		
-		else if((EX_MEM_RegWrite==1)&&((EX_MEM_Rd==IF_ID_Rs) || (EX_MEM_Rd==IF_ID_Rt))) begin
+		else if(((EX_MEM_RegWrite==1)&&(EX_MEM_Rd!=0))&&((EX_MEM_Rd==IF_ID_Rs) || (EX_MEM_Rd==IF_ID_Rt))) begin
 			PCWrite<=0;
 			IF_ID_Write<=0;
 			control<=0;
@@ -68,7 +68,7 @@ module HazardDetectionUnit(IF_ID_Rs, IF_ID_Rt, ID_EX_Rd, EX_MEM_Rd, MEM_WB_Rd,ju
 		end
 		
 		
-		else if((ID_EX_RegWrite==1) &&((ID_EX_Rd==IF_ID_Rs)||(ID_EX_Rd==IF_ID_Rt))) begin
+		else if(((ID_EX_RegWrite==1)&&(ID_EX_Rd!=0)) &&((ID_EX_Rd==IF_ID_Rs)||(ID_EX_Rd==IF_ID_Rt))) begin
 			PCWrite<=0;
 			IF_ID_Write<=0;
 			control<=0;
