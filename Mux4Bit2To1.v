@@ -14,7 +14,7 @@ module Mux4Bit2To1(out, inA, inB, sel);
     input [3:0] inA;
     input [3:0] inB;
 
-    input [1:0] sel;
+    input  sel;
 
     always @(*) begin
     if(sel==0)begin
