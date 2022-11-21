@@ -1,7 +1,7 @@
 #  Fall 2022
-#  Team Members:    
-#  % Effort    :   
-#
+#  Team Members:   Ashley Tittelbaugh, Mario Weiler, Julia Otto 
+#  % Effort    :   33%/33%/33% 
+# NOTE: la, li are not changed as MIPSHelper changes them automatically to ori instructions
 # ECE369A,  
 # 
 
