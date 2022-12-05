@@ -117,7 +117,11 @@ module Data_Path(Reset, Clk, WriteData, WB_PCAddResult, v0,v1);
     HazardDetectionUnit haz(Reset,ID_Instruction[25:21], ID_Instruction[20:16], EX_WriteRegData, MEM_RegDst, WB_RegDst,ID[0], ID[1], EX_WBCtrl[0],  MEM_WB_Ctrl[0], WB_RegWrite, PCSrc,PCWrite,IF_ID_Write, control, IF_ID_flush);
 	
     RegisterFile RegFile1(ID_Instruction[25:21], ID_Instruction[20:16], WB_RegDst, WriteData, WB_RegWrite, ID_Read1, ID_Read2, Clk, Reset,v0,v1);
-    SignExtension Sign1(ID_Instruction[15:0], ID_SignExtend);
+    
+    Mux32Bit3To1 fwdMux1(ID_Read1,ID_Instruction[25:21],  MEM_Read, WB_Read, ForwardC);
+    Mux32Bit3To1 fwdMux2(ID_Read2,ID_Instruction[20:16],  MEM_Read, WB_Read, ForwardD);
+   
+   SignExtension Sign1(ID_Instruction[15:0], ID_SignExtend);
     Controller  Con1(ID_Instruction[31:26],IDEX_Ctrl, IDMEM_Ctrl, IDWB_Ctrl, ID, ID_Instruction[5:0]);
     Mux9Bit2To1 conex(ID_EX_Ctrl,0, IDEX_Ctrl, control);
     Mux2Bit2To1 conmem(ID_MEM_Ctrl,0, IDMEM_Ctrl, control);
