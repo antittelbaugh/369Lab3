@@ -15,8 +15,8 @@ module ForwardingUnit(ID_RegRs, ID_RegRt, EX_RegRs, EX_RegRt, MEM_Rd, MEM_RegWri
 	always @(ID_RegRs, ID_RegRt, EX_RegRs, EX_RegRt, MEM_Rd, WB_Rd, MEM_RegWrite, WB_RegWrite) begin
             EX_ReadData1MEM <= 0;
             EX_ReadData2MEM <= 0;
-            ID_ReadData1Overwrite <= 0;
-            ID_ReadData2Overwrite <= 0;
+            ID_ReadData1 <= 0;
+            ID_ReadData2 <= 0;
 
         //FORWARDING TO EXECUTE RS
 		if (EX_RegRs == MEM_Rd && MEM_RegWrite == 1) begin
