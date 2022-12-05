@@ -6,6 +6,9 @@ module ForwardingUnit(ID_RegRs, ID_RegRt, EX_RegRs, EX_RegRt, MEM_Rd, MEM_RegWri
 
 	output [1:0] ForwardA;
 	output [1:0] ForwardB;
+	output [1:0] ForwardC;
+	output [1:0] ForwardD;
+	
 
 
 
@@ -48,23 +51,23 @@ module ForwardingUnit(ID_RegRs, ID_RegRt, EX_RegRs, EX_RegRt, MEM_Rd, MEM_RegWri
 		
 		// FORWARDING TO DECODE
 		if (ID_RegRs == MEM_Rd && MEM_RegWrite == 1 && MEM_Rd != 0) begin
-			ForwardA <= 2'b01;
+			ForwardC <= 2'b01;
         	end 
 		else if (ID_RegRs == WB_Rd && WB_RegWrite == 1 && WB_Rd != 0) begin
-			ForwardA <= 2'b10;
+			ForwardC <= 2'b10;
 		end 
 		else begin
-			ForwardA <= 2'b00;
+			ForwardC <= 2'b00;
 		end
 		
 		if (ID_RegRt == MEM_Rd && MEM_RegWrite == 1 && MEM_Rd != 0) begin
-			ForwardB <= 2'b01;
+			ForwardD <= 2'b01;
         	end 
 		else if (ID_RegRt == WB_Rd && WB_RegWrite == 1 && WB_Rd != 0) begin
-			ForwardB <= 2'b10;
+			ForwardD <= 2'b10;
 		end 
 		else begin
-			ForwardB <= 2'b00;
+			ForwardD <= 2'b00;
 		end
 		
 
