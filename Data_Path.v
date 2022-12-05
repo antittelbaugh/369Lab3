@@ -61,6 +61,8 @@ module Data_Path(Reset, Clk, WriteData, WB_PCAddResult, v0,v1);
     wire [3:0]ALUCon;
     wire [31:0]ALUB;
     wire [31:0]ALUA;
+    wire [31:0]ALUInput1;
+    wire [31:0]ALUAInput2;
     wire [31:0]storeHalf;
     wire [31:0]storeByte;
     wire [31:0] shiftedImmeadiate;
@@ -99,7 +101,7 @@ module Data_Path(Reset, Clk, WriteData, WB_PCAddResult, v0,v1);
     wire IF_ID_Write;
     wire flush;
     wire control;
-    wire ForwardA, ForwardB;
+    wire ForwardA, ForwardB, ForwardC, ForwardD;
 
     Mux32Bit2To1 PCSrc1(Address_mux, PCAddResult,  ID_BranchAddResult, PCSrc);
     InstructionMemory IMEM(PCResult, Instruction); 
@@ -151,7 +153,7 @@ module Data_Path(Reset, Clk, WriteData, WB_PCAddResult, v0,v1);
     Mux32Bit3To1 ALUMux1(ALUInput1, ALUA, MEM_Read, WB_Read, ForwardA);
     Mux32Bit3To1 ALUMux2(ALUInput2, ALUB, MEM_Read, WB_Read, ForwardB);
 
-    ALU32Bit ALU(ALUCon, ALUA, ALUB, EX_ALUResult, EX_ZeroFlag);
+    ALU32Bit ALU(ALUCon, ALUInput1, ALUInput2, EX_ALUResult, EX_ZeroFlag);
     SignExtension_8 sb(EX_Read2[7:0], storeByte);
     SignExtension sh(EX_Read2[15:0], storeHalf);
     Mux32Bit3To1 shsb(EX_WriteMemData, EX_Read2, storeHalf,storeByte, EX_halfbyte);
